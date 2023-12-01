@@ -6,6 +6,10 @@ from utils import perform_ocr
 
 app = FastAPI()
 
+@app.get("/")
+async def root():
+    return {"message": "Welcome to the OCR API"}
+
 @app.post("/ocr/")
 async def ocr_receipt(file: UploadFile):
     # Check if the uploaded file is an image
