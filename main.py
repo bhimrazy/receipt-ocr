@@ -1,4 +1,5 @@
 import argparse
+import os
 
 import cv2
 import imutils
@@ -12,6 +13,10 @@ def main():
         "-i", "--image", type=str, required=True, help="path to input image"
     )
     args = parser.parse_args()
+
+    # check if image with given path exists
+    if not os.path.exists(args.image):
+        raise Exception("The given image does not exist.")
 
     # load the image, resize and compute ratio
     img_orig  = cv2.imread(args.image)
