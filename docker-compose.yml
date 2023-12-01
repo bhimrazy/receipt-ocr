@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  ocr-engine:
+    container_name: ocr-engine
+    build:
+      context: .
+    ports:
+      - "8000:80"
+    volumes:
+      - .:/app
