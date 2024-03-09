@@ -18,7 +18,7 @@ cd receipt-ocr
 ```
 
 ### Set up Python environment (if not using Docker)
-- Install tesseract
+- Install [tesseract](https://tesseract-ocr.github.io/tessdoc/Installation.html)
 
 ```bash
 # Create and activate a virtual environment (optional but recommended)
