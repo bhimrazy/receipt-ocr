@@ -38,10 +38,11 @@ pip install -r requirements.txt
 The `main.py` script performs OCR on an input image of a receipt.
 
 ```bash
-python main.py -i path/to/your/image.jpg
+python main.py -i images/receipt.jpg
 ```
 
-Replace `path/to/your/image.jpg` with the path to your receipt image.
+Replace `images/receipt.jpg` with the path to your receipt image.
+>Please ensure that the image is well-lit and that the edges of the receipt are clearly visible and detectable within the image.
 
 ### Using Docker-compose
 
@@ -62,7 +63,7 @@ The OCR functionality can be accessed via a FastAPI endpoint:
 Example usage with cURL:
 
 ```bash
-$curl -X 'POST' \
+curl -X 'POST' \
   'http://localhost:8000/ocr/' \
   -H 'accept: application/json' \
   -H 'Content-Type: multipart/form-data' \
