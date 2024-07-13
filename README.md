@@ -2,6 +2,8 @@
 
 This repository hosts a script and a Docker-compose setup for performing Optical Character Recognition (OCR) on receipt images.
 
+![image](https://github.com/bhimrazy/receipt-ocr/assets/46085301/305df68d-50d8-41d4-81d0-9324966fb6c9)
+
 ## Prerequisites
 
 - Python 3.x
