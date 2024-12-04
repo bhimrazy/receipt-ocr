@@ -4,6 +4,16 @@ This repository hosts a script and a Docker-compose setup for performing Optical
 
 ![image](https://github.com/bhimrazy/receipt-ocr/assets/46085301/305df68d-50d8-41d4-81d0-9324966fb6c9)
 
+## Star History
+
+<a href="https://star-history.com/#bhimrazy/receipt-ocr&Date">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=bhimrazy/receipt-ocr&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=bhimrazy/receipt-ocr&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=bhimrazy/receipt-ocr&type=Date" />
+ </picture>
+</a>
+
 ## Prerequisites
 
 - Python 3.x
