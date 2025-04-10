@@ -1,0 +1,25 @@
+name: CI - Build and Push Docker Image (Develop) - Local Registry (RPi) - Python
+
+on:
+  push:
+    branches: [develop]
+  pull_request:
+    branches: [develop]
+
+jobs:
+  build-and-test-rpi:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image (ARM architecture - assuming your RPi is ARM)
+        run: docker build -t localhost:5000/ocr-engine:develop .
+
+  push-docker-image:
+    needs: build-and-test-rpi
+    runs-on: self-hosted
+    steps:
+      - name: Push Docker image to Local Registry
+        run: docker push localhost:5000/ocr-engine:develop

@@ -1,0 +1,28 @@
+name: CD - Deploy to Raspberry Pi (Develop) - Local Registry (RPi) - Python
+
+on:
+  workflow_run:
+    workflows: ['CI - Build and Push Docker Image (Develop) - Local Registry (RPi) - Python']
+    branches: [develop]
+    types:
+      - completed
+
+jobs:
+  deploy-to-rpi:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code (optional)
+        uses: actions/checkout@v4
+
+      - name: Pull Docker image from Local Registry
+        run: docker pull localhost:5000/ocr-engine:develop
+
+      - name: Stop and remove old container (if running)
+        run: docker stop ocr-engine && docker rm ocr-engine || true
+
+      - name: Run new Docker container
+        run: docker run -d -p 8089:80 --name ocr-engine -v $(pwd):/app localhost:5000/ocr-engine:develop
+
+      - name: Verify deployment (health check)
+        run: curl -s -o /dev/null -w "%{http_code}" http://localhost:8089/health/ | grep 200
