@@ -22,3 +22,7 @@ async def ocr_receipt(file: UploadFile):
     else:
         return {"error": "Uploaded file is not an image"}
 
+@app.get("/health/")
+async def health_check():
+    return {"status": "ok", "message": "Service is running"}
+
