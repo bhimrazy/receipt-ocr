@@ -25,7 +25,7 @@ jobs:
         run: docker run -d -p 8089:80 --name ocr-engine -v $(pwd):/app localhost:5000/ocr-engine:develop
 
       - name: Wait for service to start
-        run: sleep 10  # Wait for 10 seconds (adjust as needed)
+        run: sleep 10
 
       - name: Verify deployment (health check)
         run: curl -s -o /dev/null -w "%{http_code}" http://localhost:8089/health/ | grep 200
