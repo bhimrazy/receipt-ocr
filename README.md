@@ -47,21 +47,23 @@ pip install receipt-ocr
 
     ```
     OPENAI_API_KEY="your_openai_api_key_here"
-    OPENAI_MODEL="gpt-4o" # Optional, defaults to gpt-4o
+    OPENAI_MODEL="gpt-4.1" 
     ```
 
     Example `.env` for Gemini:
 
     ```
-    GEMINI_API_KEY="your_gemini_api_key_here"
-    GEMINI_MODEL="gemini-pro" # Optional, defaults to gemini-pro
+    OPENAI_API_KEY="your_gemini_api_key_here"
+    OPENAI_BASE_URL="https://generativelanguage.googleapis.com/v1beta/openai/"
+    OPENAI_MODEL="gemini-2.5-pro"
     ```
 
     Example `.env` for Groq:
 
     ```
-    GROQ_API_KEY="your_groq_api_key"
-    GROQ_MODEL="llama3-8b-8192" # Optional, defaults to llama3-8b-8192
+    OPENAI_API_KEY="your_groq_api_key_here"
+    OPENAI_BASE_URL="https://api.groq.com/openai/v1/models"
+    OPENAI_MODEL="llama3-8b-8192"
     ```
 
 2.  **Process a receipt using the `receipt-ocr` CLI:**
