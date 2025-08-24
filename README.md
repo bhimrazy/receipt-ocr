@@ -44,14 +44,16 @@ pip install receipt-ocr
     Create a `.env` file in the project root or set environment variables directly. This module supports multiple LLM providers.
 
     Example `.env` for OpenAI:
+
     > Get it from here: http://platform.openai.com/api-keys
 
     ```
     OPENAI_API_KEY="your_openai_api_key_here"
-    OPENAI_MODEL="gpt-4.1" 
+    OPENAI_MODEL="gpt-4.1"
     ```
 
     Example `.env` for Gemini:
+
     > Get it from here: https://aistudio.google.com/app/apikey
 
     ```
@@ -61,6 +63,7 @@ pip install receipt-ocr
     ```
 
     Example `.env` for Groq:
+
     > Get it from here: https://console.groq.com/keys
 
     ```
@@ -70,36 +73,42 @@ pip install receipt-ocr
     ```
 
 2.  **Process a receipt using the `receipt-ocr` CLI:**
+
     ```bash
     receipt-ocr images/receipt.jpg
     ```
+
     This command will use the configured LLM provider to extract structured data from the receipt image.
 
     > sample output
+
     ```json
     {
-        "merchant_name": "Saathimart.com",
-        "merchant_address": "Narephat, Kathmandu",
-        "transaction_date": "2024-05-07",
-        "transaction_time": "09:09:00",
-        "total_amount": 185.0,
-        "line_items": [
-            {
-                "item_name": "COLGATE DENTAL",
-                "item_quantity": 1,
-                "item_price": 95.0
-            },
-            {
-                "item_name": "PATANJALI ANTI",
-                "item_quantity": 1,
-                "item_price": 70.0
-            },
-            {
-                "item_name": "GODREJ NO 1 SOAP",
-                "item_quantity": 1,
-                "item_price": 20.0
-            }
-        ]
+      "merchant_name": "Saathimart.com",
+      "merchant_address": "Narephat, Kathmandu",
+      "transaction_date": "2024-05-07",
+      "transaction_time": "09:09:00",
+      "total_amount": 185.0,
+      "line_items": [
+        {
+          "item_name": "COLGATE DENTAL",
+          "item_quantity": 1,
+          "item_price": 95.0,
+          "item_total": 95.0
+        },
+        {
+          "item_name": "PATANJALI ANTI",
+          "item_quantity": 1,
+          "item_price": 70.0,
+          "item_total": 70.0
+        },
+        {
+          "item_name": "GODREJ NO 1 SOAP",
+          "item_quantity": 1,
+          "item_price": 20.0,
+          "item_total": 20.0
+        }
+      ]
     }
     ```
 
