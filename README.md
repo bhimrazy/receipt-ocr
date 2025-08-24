@@ -1,5 +1,9 @@
 # Receipt OCR Engine
 
+[![Build Status](https://github.com/bhimrazy/receipt-ocr/actions/workflows/receipt-ocr.yml/badge.svg)](https://github.com/bhimrazy/receipt-ocr/actions/workflows/receipt-ocr.yml)
+[![Code Coverage](https://codecov.io/gh/bhimrazy/receipt-ocr/branch/main/graph/badge.svg)](https://codecov.io/gh/bhimrazy/receipt-ocr)
+[![License](https://img.shields.io/github/license/bhimrazy/receipt-ocr)](https://github.com/bhimrazy/receipt-ocr/blob/main/LICENSE)
+
 An efficient OCR engine for receipt image processing.
 
 This repository provides a comprehensive solution for Optical Character Recognition (OCR) on receipt images, featuring both a dedicated Tesseract OCR module and a general receipt processing package using LLMs.
