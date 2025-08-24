@@ -5,12 +5,13 @@ import sys
 from io import StringIO
 import numpy as np
 
+
 # Patch the main function to avoid argparse.parse_args() being called directly
-@patch('src.tesseract_ocr.main.argparse.ArgumentParser')
-@patch('src.tesseract_ocr.main.os.path.exists')
-@patch('src.tesseract_ocr.main.cv2')
-@patch('src.tesseract_ocr.main.imutils')
-@patch('src.tesseract_ocr.main.pytesseract')
+@patch("src.tesseract_ocr.main.argparse.ArgumentParser")
+@patch("src.tesseract_ocr.main.os.path.exists")
+@patch("src.tesseract_ocr.main.cv2")
+@patch("src.tesseract_ocr.main.imutils")
+@patch("src.tesseract_ocr.main.pytesseract")
 def test_main_success(
     mock_pytesseract,
     mock_imutils,
@@ -35,7 +36,9 @@ def test_main_success(
     mock_cv2.Canny.return_value = np.zeros((50, 50), dtype=np.uint8)
 
     # Mock contours to simulate a found receipt
-    mock_contour = np.array([[[0, 0]], [[0, 49]], [[49, 49]], [[49, 0]]], dtype=np.int32)
+    mock_contour = np.array(
+        [[[0, 0]], [[0, 49]], [[49, 49]], [[49, 0]]], dtype=np.int32
+    )
     mock_imutils.grab_contours.return_value = [mock_contour]
     mock_cv2.contourArea.return_value = 1000
     mock_cv2.arcLength.return_value = 200
@@ -59,8 +62,8 @@ def test_main_success(
     assert "Extracted Text from Main" in captured.out
 
 
-@patch('src.tesseract_ocr.main.argparse.ArgumentParser')
-@patch('src.tesseract_ocr.main.os.path.exists')
+@patch("src.tesseract_ocr.main.argparse.ArgumentParser")
+@patch("src.tesseract_ocr.main.os.path.exists")
 def test_main_image_not_found(mock_os_path_exists, mock_argparse_parser):
     mock_os_path_exists.return_value = False
 
@@ -74,11 +77,11 @@ def test_main_image_not_found(mock_os_path_exists, mock_argparse_parser):
         main()
 
 
-@patch('src.tesseract_ocr.main.argparse.ArgumentParser')
-@patch('src.tesseract_ocr.main.os.path.exists')
-@patch('src.tesseract_ocr.main.cv2')
-@patch('src.tesseract_ocr.main.imutils')
-@patch('src.tesseract_ocr.main.pytesseract')
+@patch("src.tesseract_ocr.main.argparse.ArgumentParser")
+@patch("src.tesseract_ocr.main.os.path.exists")
+@patch("src.tesseract_ocr.main.cv2")
+@patch("src.tesseract_ocr.main.imutils")
+@patch("src.tesseract_ocr.main.pytesseract")
 def test_main_no_receipt_outline(
     mock_pytesseract,
     mock_imutils,
@@ -99,10 +102,14 @@ def test_main_no_receipt_outline(
     mock_cv2.Canny.return_value = np.zeros((50, 50), dtype=np.uint8)
 
     # No contours found that approximate to 4 points
-    mock_imutils.grab_contours.return_value = [np.array([[[0,0],[1,1],[2,2]]], dtype=np.int32)]
+    mock_imutils.grab_contours.return_value = [
+        np.array([[[0, 0], [1, 1], [2, 2]]], dtype=np.int32)
+    ]
     mock_cv2.contourArea.return_value = 1000
     mock_cv2.arcLength.return_value = 200
-    mock_cv2.approxPolyDP.return_value = np.array([[[0,0],[1,1],[2,2]]], dtype=np.int32)
+    mock_cv2.approxPolyDP.return_value = np.array(
+        [[[0, 0], [1, 1], [2, 2]]], dtype=np.int32
+    )
 
     from src.tesseract_ocr.main import main
 
