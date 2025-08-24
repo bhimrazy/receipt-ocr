@@ -4,7 +4,6 @@ from openai import OpenAI
 from PIL import Image
 import base64
 import io
-import json
 from .prompts import SYSTEM_PROMPT, USER_PROMPT
 
 

@@ -1,8 +1,5 @@
 import pytest
 from unittest.mock import patch, MagicMock
-import os
-import sys
-from io import StringIO
 import numpy as np
 
 

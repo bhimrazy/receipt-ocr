@@ -1,4 +1,3 @@
-import json
 import pytest
 from receipt_ocr.parsers import ReceiptParser
 
