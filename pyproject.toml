@@ -54,4 +54,4 @@ packages = ["src/receipt_ocr"]
 allow-direct-references = true
 
 [dependency-groups]
-dev = ["pytest", "coverage", "codecov", "pytest-cov"]
+dev = ["pytest", "coverage", "codecov", "pytest-cov", "Pillow"]
