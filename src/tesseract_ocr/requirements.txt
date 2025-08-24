@@ -1,0 +1,7 @@
+opencv-python-headless
+imutils
+scipy
+pytesseract
+fastapi
+uvicorn
+python-multipart
