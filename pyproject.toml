@@ -45,7 +45,10 @@ path = "src/receipt_ocr/__about__.py"
 pattern = "__version__ = \"(?P<version>.+)\""
 
 [tool.hatch.build]
-include = ["/src/receipt_ocr"]
+include = ["src/receipt_ocr"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/receipt_ocr"]
 
 [tool.hatch.metadata]
 allow-direct-references = true
