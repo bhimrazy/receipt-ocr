@@ -1,0 +1,36 @@
+name: PyPI Release
+
+# https://help.github.com/en/actions/reference/events-that-trigger-workflows
+on: # Trigger the workflow on push or pull request, but only for the main branch
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/release-pypi.yml"
+  release:
+    types: [published]
+
+# based on https://github.com/pypa/gh-action-pypi-publish
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv and set Python version
+        uses: astral-sh/setup-uv@v6
+        with:
+          activate-environment: true
+          python-version: "3.10"
+          enable-cache: true
+
+      - name: Build package
+        run: uv build --no-sources
+
+      - name: Publish package
+        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+        env:
+          UV_PUBLISH_TOKEN: ${{ secrets.pypi_password }}
+        run: uv publish
