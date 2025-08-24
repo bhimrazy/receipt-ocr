@@ -42,7 +42,7 @@ def main():
     parser.add_argument(
         "--model",
         type=str,
-        default="gpt-4-vision-preview",
+        default="gpt-4.1",
         help="The model to use for the LLM.",
     )
     parser.add_argument("--api_key", type=str, help="The API key for the LLM provider.")
