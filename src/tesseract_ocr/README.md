@@ -94,3 +94,7 @@ curl -X 'POST' \
 ## License
 
 This project is licensed under the terms of the MIT license.
+
+## References
+
+- [Automatically OCR’ing Receipts and Scans](https://pyimagesearch.com/2021/10/27/automatically-ocring-receipts-and-scans/)
