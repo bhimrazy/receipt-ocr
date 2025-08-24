@@ -44,6 +44,7 @@ pip install receipt-ocr
     Create a `.env` file in the project root or set environment variables directly. This module supports multiple LLM providers.
 
     Example `.env` for OpenAI:
+    > Get it from here: http://platform.openai.com/api-keys
 
     ```
     OPENAI_API_KEY="your_openai_api_key_here"
@@ -51,6 +52,7 @@ pip install receipt-ocr
     ```
 
     Example `.env` for Gemini:
+    > Get it from here: https://aistudio.google.com/app/apikey
 
     ```
     OPENAI_API_KEY="your_gemini_api_key_here"
@@ -59,6 +61,7 @@ pip install receipt-ocr
     ```
 
     Example `.env` for Groq:
+    > Get it from here: https://console.groq.com/keys
 
     ```
     OPENAI_API_KEY="your_groq_api_key_here"
