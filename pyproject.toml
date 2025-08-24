@@ -52,4 +52,4 @@ allow-direct-references = true
 
 
 [project.optional-dependencies]
-test = ["pytest", "coverage", "codecov", "pytest-cov", "Pillow"]
+test = ["pytest", "coverage", "codecov", "pytest-cov"]
