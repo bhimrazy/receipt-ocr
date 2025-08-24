@@ -1,6 +1,6 @@
-from .cli import ReceiptProcessor
-from .parsers import ReceiptParser
-from .providers import OpenAIProvider
+from receipt_ocr.cli import ReceiptProcessor
+from receipt_ocr.parsers import ReceiptParser
+from receipt_ocr.providers import OpenAIProvider
 
 __all__ = [
     "ReceiptProcessor",
