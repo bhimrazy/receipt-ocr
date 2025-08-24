@@ -43,20 +43,17 @@ jobs:
       - name: Run tests
         run: uv run pytest --cov=src/receipt_ocr tests/receipt_ocr
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-
       - name: Statistics
         run: |
           uv run coverage report
-          uv run coverage xml
+          uv run coverage xml -o coverage-receipt-ocr.xml
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage.xml
-          flags: unittests
+          file: ./coverage-receipt-ocr.xml
+          flags: receipt_ocr
           env_vars: OS,PYTHON
           name: codecov-umbrella
           fail_ci_if_error: false

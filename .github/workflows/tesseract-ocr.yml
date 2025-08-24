@@ -13,20 +13,6 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v1
-        with:
-          python-version: "3.12"
-      - name: Install dependencies
-        run: uv pip install -r src/tesseract_ocr/requirements.txt
-      - name: Run tests
-        run: uv run pytest tests/tesseract_ocr
-
-
-jobs:
   ruff:
     runs-on: ubuntu-latest
     steps:
@@ -58,10 +44,18 @@ jobs:
       - name: Run tests
         run: uv run pytest --cov=src/tesseract_ocr tests/tesseract_ocr
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
-
       - name: Statistics
         run: |
           uv run coverage report
-          uv run coverage xml
+          uv run coverage xml -o coverage-tesseract-ocr.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage-tesseract-ocr.xml
+          flags: tesseract_ocr
+          env_vars: OS,PYTHON
+          name: codecov-umbrella
+          fail_ci_if_error: false
+          slug: bhimrazy/receipt-ocr
