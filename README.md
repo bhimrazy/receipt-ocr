@@ -1,6 +1,6 @@
 # Receipt OCR Engine
 
-This repository provides a comprehensive solution for Optical Character Recognition (OCR) on receipt images, featuring both a dedicated Tesseract OCR module and a general receipt processing package.
+This repository provides a comprehensive solution for Optical Character Recognition (OCR) on receipt images, featuring both a dedicated Tesseract OCR module and a general receipt processing package using LLMs.
 
 ![image](https://github.com/bhimrazy/receipt-ocr/assets/46085301/305df68d-50d8-41d4-81d0-9324966fb6c9)
 
@@ -18,35 +18,15 @@ This repository provides a comprehensive solution for Optical Character Recognit
 
 The project is organized into two main modules:
 
-*   **`src/receipt_ocr/`**: A new package for abstracting general receipt processing logic, including CLI, parsers, prompts, and providers for various LLM services.
-*   **`src/tesseract_ocr/`**: Contains the Tesseract OCR FastAPI application, CLI, utility functions, and Docker setup for performing OCR.
+- **`src/receipt_ocr/`**: A new package for abstracting general receipt processing logic, including CLI, parsers, prompts, and providers for various LLM services.
+- **`src/tesseract_ocr/`**: Contains the Tesseract OCR FastAPI application, CLI, utility functions, and Docker setup for performing OCR.
 
 ## Prerequisites
 
-*   Python 3.x
-*   Docker (for running Tesseract OCR as a service)
-*   Docker-compose (for running Tesseract OCR as a service)
-*   Tesseract OCR (for local Tesseract CLI usage) - [Installation Guide](https://tesseract-ocr.github.io/tessdoc/Installation.html)
-
-## Installation
-
-### Clone the repository
-
-```bash
-git clone https://github.com/bhimrazy/receipt-ocr.git
-cd receipt-ocr
-```
-
-### Set up Python environment
-
-```bash
-# Create and activate a virtual environment (optional but recommended)
-python -m venv venv
-source venv/bin/activate  # For Windows, use venv\Scripts\activate
-
-# Install dependencies for both modules
-pip install -e .
-```
+- Python 3.x
+- Docker (for running Tesseract OCR as a service)
+- Docker-compose (for running Tesseract OCR as a service)
+- Tesseract OCR (for local Tesseract CLI usage) - [Installation Guide](https://tesseract-ocr.github.io/tessdoc/Installation.html)
 
 ## Usage Examples
 
@@ -72,6 +52,7 @@ This module provides a higher-level abstraction for processing receipts, leverag
     ```
 
     Example `.env` for Groq:
+
     ```
     GROQ_API_KEY="your_groq_api_key"
     GROQ_MODEL="llama3-8b-8192" # Optional, defaults to llama3-8b-8192
@@ -127,6 +108,7 @@ We welcome contributions to the Receipt OCR Engine! To contribute, please follow
 1.  **Fork the repository** and clone it to your local machine.
 2.  **Create a new branch** for your feature or bug fix.
 3.  **Set up your development environment**:
+
     ```bash
     # Navigate to the project root
     cd receipt-ocr
@@ -138,6 +120,7 @@ We welcome contributions to the Receipt OCR Engine! To contribute, please follow
     # Install development and test dependencies
     pip install -e .[dev,test]
     ```
+
 4.  **Make your changes** and ensure they adhere to the project's coding style.
 5.  **Run tests** to ensure your changes haven't introduced any regressions:
     ```bash
