@@ -1,5 +1,7 @@
 # Receipt OCR Engine
 
+An efficient OCR engine for receipt image processing.
+
 This repository provides a comprehensive solution for Optical Character Recognition (OCR) on receipt images, featuring both a dedicated Tesseract OCR module and a general receipt processing package using LLMs.
 
 ![image](https://github.com/bhimrazy/receipt-ocr/assets/46085301/305df68d-50d8-41d4-81d0-9324966fb6c9)
