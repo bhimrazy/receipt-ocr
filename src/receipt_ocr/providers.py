@@ -4,7 +4,7 @@ from openai import OpenAI
 from PIL import Image
 import base64
 import io
-from .prompts import SYSTEM_PROMPT, USER_PROMPT
+from receipt_ocr.prompts import SYSTEM_PROMPT, USER_PROMPT
 
 
 class LLMProvider(ABC):

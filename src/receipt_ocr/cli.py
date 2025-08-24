@@ -1,8 +1,8 @@
 import argparse
 import os
 import json
-from .providers import OpenAIProvider
-from .parsers import ReceiptParser
+from receipt_ocr.providers import OpenAIProvider
+from receipt_ocr.parsers import ReceiptParser
 from dotenv import load_dotenv
 
 load_dotenv()

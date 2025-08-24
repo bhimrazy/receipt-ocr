@@ -1,5 +1,5 @@
 from unittest.mock import patch, MagicMock
-from receipt_ocr.providers import OpenAIProvider
+from receipt_ocr import OpenAIProvider
 
 
 @patch("receipt_ocr.providers.OpenAI")

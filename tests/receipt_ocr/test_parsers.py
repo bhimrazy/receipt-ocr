@@ -1,5 +1,5 @@
 import pytest
-from receipt_ocr.parsers import ReceiptParser
+from receipt_ocr import ReceiptParser
 
 
 @pytest.fixture
