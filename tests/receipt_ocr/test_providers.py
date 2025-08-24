@@ -4,7 +4,7 @@ from receipt_ocr.providers import OpenAIProvider
 
 
 @patch("receipt_ocr.providers.OpenAI")
-def test_get_response(mock_openai_client_class):
+def test_get_response(mock_openai_client_class, tmp_path):
     # Configure the mock OpenAI client that will be used by OpenAIProvider
     mock_openai_instance = MagicMock()
     mock_openai_client_class.return_value = mock_openai_instance
@@ -21,19 +21,17 @@ def test_get_response(mock_openai_client_class):
 
     # Create a dummy image file
     dummy_image = Image.new("RGB", (10, 10), color="red")
-    dummy_image.save("dummy_receipt.png")
+    image_path = tmp_path / "dummy_receipt.png"
+    dummy_image.save(image_path)
 
     dummy_json_schema = {
         "type": "object",
         "properties": {"merchant_name": {"type": "string"}},
     }
     response = provider.get_response(
-        "dummy_receipt.png", json_schema=dummy_json_schema, model="gpt-4o"
+        str(image_path), json_schema=dummy_json_schema, model="gpt-4o"
     )
 
     assert response == '{"merchant_name": "Test Merchant"}'
 
-    # Clean up the dummy image file
-    import os
 
-    os.remove("dummy_receipt.png")
