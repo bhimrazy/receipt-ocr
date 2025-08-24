@@ -51,6 +51,7 @@ class OpenAIProvider(LLMProvider):
         response = self.client.chat.completions.create(
             model=model,
             response_format={"type": "json_object"},
+            temperature=0.2,
             messages=[
                 {
                     "role": "system",
