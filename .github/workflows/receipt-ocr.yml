@@ -37,7 +37,7 @@ jobs:
 
       - name: Install dependencies
         run: | 
-          uv pip install -e .[test]
+          uv sync --all-extras --dev
           uv pip list
 
       - name: Run tests

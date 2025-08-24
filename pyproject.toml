@@ -50,6 +50,5 @@ include = ["/src/receipt_ocr"]
 [tool.hatch.metadata]
 allow-direct-references = true
 
-
-[project.optional-dependencies]
-test = ["pytest", "coverage", "codecov", "pytest-cov"]
+[dependency-groups]
+dev = ["pytest", "coverage", "codecov", "pytest-cov"]

@@ -726,7 +726,7 @@ dependencies = [
 ]
 
 [package.dev-dependencies]
-test = [
+dev = [
     { name = "codecov" },
     { name = "coverage" },
     { name = "pytest" },
@@ -741,7 +741,7 @@ requires-dist = [
 ]
 
 [package.metadata.requires-dev]
-test = [
+dev = [
     { name = "codecov" },
     { name = "coverage" },
     { name = "pytest" },

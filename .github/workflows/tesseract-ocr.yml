@@ -43,7 +43,7 @@ jobs:
           
       - name: Install dependencies
         run: | 
-          uv pip install -e .[test]
+          uv sync --all-extras --dev
           uv pip install -r src/tesseract_ocr/requirements.txt
           uv pip list
 
