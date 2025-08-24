@@ -1,0 +1,67 @@
+
+name: tesseract-ocr CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/tesseract_ocr/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/tesseract_ocr/**'
+  workflow_dispatch:
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/ruff-action@v3
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install uv and set Python version ${{ matrix.python-version }}
+        uses: astral-sh/setup-uv@v6
+        with:
+          activate-environment: true
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+
+      - name: Install Tesseract OCR
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          tesseract --version
+          
+      - name: Install dependencies
+        run: | 
+          uv sync --all-extras --dev
+          uv pip install -r src/tesseract_ocr/requirements.txt
+          uv pip list
+
+      - name: Run tests
+        run: uv run pytest --cov=src/tesseract_ocr tests/tesseract_ocr
+
+      - name: Statistics
+        run: |
+          uv run coverage report
+          uv run coverage xml -o coverage-tesseract-ocr.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage-tesseract-ocr.xml
+          flags: tesseract_ocr
+          env_vars: OS,PYTHON
+          name: codecov-umbrella
+          fail_ci_if_error: false
+          slug: bhimrazy/receipt-ocr

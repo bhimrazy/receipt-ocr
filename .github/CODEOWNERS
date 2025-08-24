@@ -1,0 +1,7 @@
+
+# These are the individuals or teams that own certain parts of the codebase.
+# When a pull request modifies files in a codeowned path, these owners
+# will be automatically requested for review.
+
+# Global ownership
+* @bhimrazy

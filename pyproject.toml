@@ -1,0 +1,57 @@
+
+[project]
+name = "receipt-ocr"
+dynamic = ["version"]
+description = "A package for extracting structured data from receipts."
+authors = [{ name = "Bhimraj Yadav", email = "bhimrajyadav977@gmail.com" }]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Environment :: Console",
+    "Natural Language :: English",
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+keywords = ["ocr", "receipts", "llm", "tesseract"]
+dependencies = ["openai", "python-dotenv", "Pillow"]
+
+[project.urls]
+Homepage = "https://github.com/bhimrazy/receipt-ocr"
+"Bug Tracker" = "https://github.com/bhimrazy/receipt-ocr/issues"
+Documentation = "https://github.com/bhimrazy/receipt-ocr"
+"Source Code" = "https://github.com/bhimrazy/receipt-ocr"
+Download = "https://github.com/bhimrazy/receipt-ocr"
+
+[project.scripts]
+receipt-ocr = "receipt_ocr.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "src/receipt_ocr/__about__.py"
+pattern = "__version__ = \"(?P<version>.+)\""
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/receipt_ocr"]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[dependency-groups]
+dev = ["pytest", "coverage", "codecov", "pytest-cov", "Pillow"]

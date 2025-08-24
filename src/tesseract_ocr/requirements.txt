@@ -5,3 +5,6 @@ pytesseract
 fastapi
 uvicorn
 python-multipart
+pytest
+numpy
+httpx

@@ -1,6 +1,8 @@
 # Receipt OCR Engine
 
-This repository hosts a script and a Docker-compose setup for performing Optical Character Recognition (OCR) on receipt images.
+An efficient OCR engine for receipt image processing.
+
+This repository provides a comprehensive solution for Optical Character Recognition (OCR) on receipt images, featuring both a dedicated Tesseract OCR module and a general receipt processing package using LLMs.
 
 ![image](https://github.com/bhimrazy/receipt-ocr/assets/46085301/305df68d-50d8-41d4-81d0-9324966fb6c9)
 
@@ -14,88 +16,191 @@ This repository hosts a script and a Docker-compose setup for performing Optical
  </picture>
 </a>
 
+## Project Structure
+
+The project is organized into two main modules:
+
+- **`src/receipt_ocr/`**: A new package for abstracting general receipt processing logic, including CLI, parsers, prompts, and providers for various LLM services.
+- **`src/tesseract_ocr/`**: Contains the Tesseract OCR FastAPI application, CLI, utility functions, and Docker setup for performing OCR.
+
 ## Prerequisites
 
 - Python 3.x
-- Docker
-- Docker-compose
+- Docker (for running Tesseract OCR as a service)
+- Docker-compose (for running Tesseract OCR as a service)
+- Tesseract OCR (for local Tesseract CLI usage) - [Installation Guide](https://tesseract-ocr.github.io/tessdoc/Installation.html)
 
-## Installation
+## Usage Examples
 
-### Clone the repository
+### Receipt OCR Module
 
-```bash
-git clone https://github.com/bhimrazy/receipt-ocr.git
-cd receipt-ocr
-```
+This module provides a higher-level abstraction for processing receipts, leveraging LLMs for parsing and extraction.
 
-### Set up Python environment (if not using Docker)
-- Install [tesseract](https://tesseract-ocr.github.io/tessdoc/Installation.html)
+To use the `receipt-ocr` CLI, first install it:
 
 ```bash
-# Create and activate a virtual environment (optional but recommended)
-python -m venv venv
-source venv/bin/activate  # For Windows, use venv\Scripts\activate
-
-# Install dependencies
-pip install -r requirements.txt
+pip install receipt-ocr
 ```
 
-## Usage
+1.  **Configure Environment Variables:**
+    Create a `.env` file in the project root or set environment variables directly. This module supports multiple LLM providers.
 
-### Running the script locally
+    Example `.env` for OpenAI:
 
-#### `main.py`
+    > Get it from here: http://platform.openai.com/api-keys
 
-The `main.py` script performs OCR on an input image of a receipt.
+    ```
+    OPENAI_API_KEY="your_openai_api_key_here"
+    OPENAI_MODEL="gpt-4.1"
+    ```
 
-```bash
-python main.py -i images/receipt.jpg
-```
+    Example `.env` for Gemini:
 
-Replace `images/receipt.jpg` with the path to your receipt image.
->Please ensure that the image is well-lit and that the edges of the receipt are clearly visible and detectable within the image.
-<img src="https://github.com/bhimrazy/receipt-ocr/assets/46085301/2ea009f0-9e15-42b2-9f15-063a8ec169f1" alt="Receipt Image" width="300" height="400">
+    > Get it from here: https://aistudio.google.com/app/apikey
 
+    ```
+    OPENAI_API_KEY="your_gemini_api_key_here"
+    OPENAI_BASE_URL="https://generativelanguage.googleapis.com/v1beta/openai/"
+    OPENAI_MODEL="gemini-2.5-pro"
+    ```
 
-### Using Docker-compose
+    Example `.env` for Groq:
 
-The repository includes a Docker-compose setup for running the OCR engine as a service.
+    > Get it from here: https://console.groq.com/keys
 
-```bash
-docker-compose up
-```
+    ```
+    OPENAI_API_KEY="your_groq_api_key_here"
+    OPENAI_BASE_URL="https://api.groq.com/openai/v1/models"
+    OPENAI_MODEL="llama3-8b-8192"
+    ```
 
-Once the service is up and running, you can perform OCR on receipt images by sending a POST request to `http://localhost:8000/ocr/` with the image file.
+2.  **Process a receipt using the `receipt-ocr` CLI:**
 
-## API Endpoint
+    ```bash
+    receipt-ocr images/receipt.jpg
+    ```
 
-The OCR functionality can be accessed via a FastAPI endpoint:
+    This command will use the configured LLM provider to extract structured data from the receipt image.
 
-- **POST** `/ocr/`: Upload a receipt image file to perform OCR. The response will contain the extracted text from the receipt.
+    > sample output
 
-Example usage with cURL:
+    ```json
+    {
+      "merchant_name": "Saathimart.com",
+      "merchant_address": "Narephat, Kathmandu",
+      "transaction_date": "2024-05-07",
+      "transaction_time": "09:09:00",
+      "total_amount": 185.0,
+      "line_items": [
+        {
+          "item_name": "COLGATE DENTAL",
+          "item_quantity": 1,
+          "item_price": 95.0,
+          "item_total": 95.0
+        },
+        {
+          "item_name": "PATANJALI ANTI",
+          "item_quantity": 1,
+          "item_price": 70.0,
+          "item_total": 70.0
+        },
+        {
+          "item_name": "GODREJ NO 1 SOAP",
+          "item_quantity": 1,
+          "item_price": 20.0,
+          "item_total": 20.0
+        }
+      ]
+    }
+    ```
 
-```bash
-curl -X 'POST' \
-  'http://localhost:8000/ocr/' \
-  -H 'accept: application/json' \
-  -H 'Content-Type: multipart/form-data' \
-  -F 'file=@images/paper-cash-sell-receipt-vector-23876532.jpg;type=image/jpeg'
-```
+### Tesseract OCR Module
 
-## Using Gemini
-- Gemini Docs:https://ai.google.dev/tutorials/python_quickstart
+This module provides direct OCR capabilities using Tesseract. For more detailed local setup and usage, refer to [`src/tesseract_ocr/README.md`](src/tesseract_ocr/README.md).
+
+1.  **Run Tesseract OCR locally via CLI:**
+
+    ```bash
+    python src/tesseract_ocr/main.py -i images/receipt.jpg
+    ```
+
+    Replace `images/receipt.jpg` with the path to your receipt image.
+
+    > Please ensure that the image is well-lit and that the edges of the receipt are clearly visible and detectable within the image.
+    > <img src="https://github.com/bhimrazy/receipt-ocr/assets/46085301/2ea009f0-9e15-42b2-9f15-063a8ec169f1" alt="Receipt Image" width="300" height="400">
+
+2.  **Run Tesseract OCR as a Docker service:**
+
+    ```bash
+    docker-compose -f src/tesseract_ocr/docker-compose.yml up
+    ```
+
+    Once the service is up and running, you can perform OCR on receipt images by sending a POST request to `http://localhost:8000/ocr/` with the image file.
+
+    **API Endpoint:**
+
+    - **POST** `/ocr/`: Upload a receipt image file to perform OCR. The response will contain the extracted text from the receipt.
+
+    **Example usage with cURL:**
+
+    ```bash
+    curl -X 'POST' \
+      'http://localhost:8000/ocr/' \
+      -H 'accept: application/json' \
+      -H 'Content-Type: multipart/form-data' \
+      -F 'file=@images/paper-cash-sell-receipt-vector-23876532.jpg;type=image/jpeg'
+    ```
+
+## Contributing
+
+We welcome contributions to the Receipt OCR Engine! To contribute, please follow these steps:
+
+1.  **Fork the repository** and clone it to your local machine.
+2.  **Create a new branch** for your feature or bug fix.
+3.  **Set up your development environment**:
+
+    ```bash
+    # Navigate to the project root
+    cd receipt-ocr
+
+    # Install uv
+    curl -LsSf https://astral.sh/uv/install.sh | sh # OR pip install uv
+
+    # Create and activate a virtual environment
+    uv venv --python=3.12
+    source .venv/bin/activate  # For Windows, use .venv\Scripts\activate
+
+    # Install development and test dependencies
+    uv sync --all-extras --dev
+    uv pip install -r src/tesseract_ocr/requirements.txt
+    uv pip install -e.
+    ```
+
+4.  **Make your changes** and ensure they adhere to the project's coding style.
+5.  **Run tests** to ensure your changes haven't introduced any regressions:
+    ```bash
+    uv run pytest
+    ```
+6.  **Run linting and formatting checks**:
+    ```bash
+    uvx ruff check .
+    uvx ruff format .
+    ```
+7.  **Commit your changes** with a clear and concise commit message.
+8.  **Push your branch** to your forked repository.
+9.  **Open a Pull Request** to the `main` branch of the upstream repository, describing your changes in detail.
+
+## LinkedIn Post
+
+- Gemini Docs: https://ai.google.dev/tutorials/python_quickstart
 - LinkedIn Post: https://www.linkedin.com/feed/update/urn:li:activity:7145860319150505984/
-  
-![image](https://github.com/bhimrazy/receipt-ocr/assets/46085301/ee4a0c82-f134-4a19-a275-93a59c7503b8)
 
+![image](https://github.com/bhimrazy/receipt-ocr/assets/46085301/ee4a0c82-f134-4a19-a275-93a59c7503b8)
 
 ## License
 
 This project is licensed under the terms of the MIT license.
 
 ## References
+
 - [Automatically OCR’ing Receipts and Scans](https://pyimagesearch.com/2021/10/27/automatically-ocring-receipts-and-scans/)
-
-

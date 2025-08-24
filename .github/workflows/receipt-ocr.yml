@@ -1,0 +1,60 @@
+
+name: receipt-ocr CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/receipt_ocr/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/receipt_ocr/**'
+  workflow_dispatch:
+
+jobs:
+  ruff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: astral-sh/ruff-action@v3
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Install uv and set Python version ${{ matrix.python-version }}
+        uses: astral-sh/setup-uv@v6
+        with:
+          activate-environment: true
+          python-version: ${{ matrix.python-version }}
+          enable-cache: true
+
+      - name: Install dependencies
+        run: | 
+          uv sync --all-extras --dev
+          uv pip list
+
+      - name: Run tests
+        run: uv run pytest --cov=src/receipt_ocr tests/receipt_ocr
+
+      - name: Statistics
+        run: |
+          uv run coverage report
+          uv run coverage xml -o coverage-receipt-ocr.xml
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage-receipt-ocr.xml
+          flags: receipt_ocr
+          env_vars: OS,PYTHON
+          name: codecov-umbrella
+          fail_ci_if_error: false
+          slug: bhimrazy/receipt-ocr

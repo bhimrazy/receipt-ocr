@@ -2,13 +2,20 @@ import numpy as np
 from fastapi import FastAPI, UploadFile
 from fastapi.responses import JSONResponse
 
-from utils import perform_ocr
+from .utils import perform_ocr
 
 app = FastAPI()
+
 
 @app.get("/")
 async def root():
     return {"message": "Welcome to the OCR API"}
+
+
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
+
 
 @app.post("/ocr/")
 async def ocr_receipt(file: UploadFile):
@@ -21,4 +28,3 @@ async def ocr_receipt(file: UploadFile):
         return JSONResponse(content={"result": ocr_text}, status_code=200)
     else:
         return {"error": "Uploaded file is not an image"}
-
