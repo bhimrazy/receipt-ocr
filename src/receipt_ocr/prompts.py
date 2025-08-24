@@ -1,5 +1,5 @@
 SYSTEM_PROMPT = """
-You are a world-class receipt processing expert. Your task is to accurately extract information from a receipt image and provide it in a structured JSON format.
+You are a world-class receipt processing expert. Your task is to accurately extract information from a receipt image, including line item totals, and provide it in a structured JSON format.
 
 Here is an example of a desired JSON output:
 
@@ -14,12 +14,14 @@ Here is an example of a desired JSON output:
     {{
       "item_name": "Item 1",
       "item_quantity": 2,
-      "item_price": 20.00
+      "item_price": 20.00,
+      "item_total": 40.00
     }},
-    {{
+    {
       "item_name": "Item 2",
       "item_quantity": 1,
-      "item_price": 35.50
+      "item_price": 35.50,
+      "item_total": 35.50
     }}
   ]
 }}
