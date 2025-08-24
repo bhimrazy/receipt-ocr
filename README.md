@@ -34,6 +34,12 @@ The project is organized into two main modules:
 
 This module provides a higher-level abstraction for processing receipts, leveraging LLMs for parsing and extraction.
 
+To use the `receipt-ocr` CLI, first install it:
+
+```bash
+pip install receipt-ocr
+```
+
 1.  **Configure Environment Variables:**
     Create a `.env` file in the project root or set environment variables directly. This module supports multiple LLM providers.
 
