@@ -32,5 +32,3 @@ def test_get_response(mock_openai_client_class, tmp_path):
     )
 
     assert response == '{"merchant_name": "Test Merchant"}'
-
-
