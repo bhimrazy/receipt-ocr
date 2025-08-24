@@ -35,6 +35,12 @@ jobs:
           python-version: ${{ matrix.python-version }}
           enable-cache: true
 
+      - name: Install Tesseract OCR
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tesseract-ocr libtesseract-dev
+          tesseract --version
+          
       - name: Install dependencies
         run: | 
           uv pip install -e .[test]
