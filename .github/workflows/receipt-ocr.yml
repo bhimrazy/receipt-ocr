@@ -4,12 +4,12 @@ name: receipt-ocr CI
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'src/receipt_ocr/**'
+    # paths:
+    #   - 'src/receipt_ocr/**'
   pull_request:
     branches: [ main ]
-    paths:
-      - 'src/receipt_ocr/**'
+    # paths:
+    #   - 'src/receipt_ocr/**'
   workflow_dispatch:
 
 jobs:

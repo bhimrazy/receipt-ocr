@@ -4,12 +4,12 @@ name: tesseract-ocr CI
 on:
   push:
     branches: [ main ]
-    paths:
-      - 'src/tesseract_ocr/**'
+    # paths:
+    #   - 'src/tesseract_ocr/**'
   pull_request:
     branches: [ main ]
-    paths:
-      - 'src/tesseract_ocr/**'
+    # paths:
+    #   - 'src/tesseract_ocr/**'
   workflow_dispatch:
 
 jobs:
