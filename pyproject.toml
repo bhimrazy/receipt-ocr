@@ -44,14 +44,14 @@ build-backend = "hatchling.build"
 path = "src/receipt_ocr/__about__.py"
 pattern = "__version__ = \"(?P<version>.+)\""
 
-[tool.hatch.build]
-include = ["src/receipt_ocr"]
-
 [tool.hatch.build.targets.wheel]
 packages = ["src/receipt_ocr"]
 
 [tool.hatch.metadata]
 allow-direct-references = true
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
 
 [dependency-groups]
 dev = ["pytest", "coverage", "codecov", "pytest-cov", "Pillow"]
