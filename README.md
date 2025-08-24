@@ -72,6 +72,34 @@ pip install receipt-ocr
     ```
     This command will use the configured LLM provider to extract structured data from the receipt image.
 
+    > sample output
+    ```json
+    {
+        "merchant_name": "Saathimart.com",
+        "merchant_address": "Narephat, Kathmandu",
+        "transaction_date": "2024-05-07",
+        "transaction_time": "09:09:00",
+        "total_amount": 185.0,
+        "line_items": [
+            {
+                "item_name": "COLGATE DENTAL",
+                "item_quantity": 1,
+                "item_price": 95.0
+            },
+            {
+                "item_name": "PATANJALI ANTI",
+                "item_quantity": 1,
+                "item_price": 70.0
+            },
+            {
+                "item_name": "GODREJ NO 1 SOAP",
+                "item_quantity": 1,
+                "item_price": 20.0
+            }
+        ]
+    }
+    ```
+
 ### Tesseract OCR Module
 
 This module provides direct OCR capabilities using Tesseract. For more detailed local setup and usage, refer to [`src/tesseract_ocr/README.md`](src/tesseract_ocr/README.md).
@@ -121,29 +149,34 @@ We welcome contributions to the Receipt OCR Engine! To contribute, please follow
     # Navigate to the project root
     cd receipt-ocr
 
+    # Install uv
+    curl -LsSf https://astral.sh/uv/install.sh | sh # OR pip install uv
+
     # Create and activate a virtual environment
-    python -m venv venv
-    source venv/bin/activate
+    uv venv --python=3.12
+    source .venv/bin/activate  # For Windows, use .venv\Scripts\activate
 
     # Install development and test dependencies
-    pip install -e .[dev,test]
+    uv sync --all-extras --dev
+    uv pip install -r src/tesseract_ocr/requirements.txt
+    uv pip install -e.
     ```
 
 4.  **Make your changes** and ensure they adhere to the project's coding style.
 5.  **Run tests** to ensure your changes haven't introduced any regressions:
     ```bash
-    pytest
+    uv run pytest
     ```
 6.  **Run linting and formatting checks**:
     ```bash
-    ruff check .
-    ruff format .
+    uvx ruff check .
+    uvx ruff format .
     ```
 7.  **Commit your changes** with a clear and concise commit message.
 8.  **Push your branch** to your forked repository.
 9.  **Open a Pull Request** to the `main` branch of the upstream repository, describing your changes in detail.
 
-## LLM Integration
+## LinkedIn Post
 
 - Gemini Docs: https://ai.google.dev/tutorials/python_quickstart
 - LinkedIn Post: https://www.linkedin.com/feed/update/urn:li:activity:7145860319150505984/
