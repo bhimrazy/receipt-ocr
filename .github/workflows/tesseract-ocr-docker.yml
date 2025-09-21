@@ -25,11 +25,11 @@ jobs:
 
       - name: Build Docker image
         working-directory: src/tesseract_ocr
-        run: docker-compose build
+        run: docker compose build
 
       - name: Start services
         working-directory: src/tesseract_ocr
-        run: docker-compose up -d
+        run: docker compose up -d
 
       - name: Wait for health check
         run: |
@@ -64,4 +64,4 @@ jobs:
 
       - name: Stop services
         working-directory: src/tesseract_ocr
-        run: docker-compose down
+        run: docker compose down
