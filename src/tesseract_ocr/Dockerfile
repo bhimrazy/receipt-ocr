@@ -42,12 +42,13 @@ COPY --from=builder /opt/venv /opt/venv
 
 # Activate the virtual environment
 ENV PATH="/opt/venv/bin:$PATH"
+ENV PYTHONPATH=/home/appuser
 
 # Copy the application code
-COPY . .
+COPY . tesseract_ocr
 
 # Expose the port
 EXPOSE 80
 
 # Run the application
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "80"]
+CMD ["uvicorn", "tesseract_ocr.app:app", "--host", "0.0.0.0", "--port", "80"]
