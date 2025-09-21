@@ -7,7 +7,7 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - .:/home/appuser
+      - .:/home/appuser/tesseract_ocr
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:80/health"]
