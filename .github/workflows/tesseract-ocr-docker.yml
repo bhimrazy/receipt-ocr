@@ -58,10 +58,12 @@ jobs:
         run: |
           response=$(curl -s -X POST -F "file=@images/receipt.jpg" http://localhost:8000/ocr/)
           echo "OCR Response: $response"
-          if ! echo "$response" | grep -q '"result"'; then
-            echo "OCR test failed: $response"
+          result=$(echo "$response" | jq -r '.result')
+          if [ -z "$result" ] || [ "$result" = "null" ]; then
+            echo "OCR test failed: no result extracted"
             exit 1
           fi
+          echo "Extracted OCR text: $result"
 
       - name: Stop services
         working-directory: src/tesseract_ocr
