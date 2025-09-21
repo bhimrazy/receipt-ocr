@@ -57,7 +57,6 @@ jobs:
       - name: Test OCR endpoint
         run: |
           response=$(curl -s -X POST -F "file=@images/receipt.jpg" http://localhost:8000/ocr/)
-          echo "OCR Response: $response"
           result=$(echo "$response" | jq -r '.result')
           if [ -z "$result" ] || [ "$result" = "null" ]; then
             echo "OCR test failed: no result extracted"
