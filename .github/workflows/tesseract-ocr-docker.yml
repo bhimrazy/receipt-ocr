@@ -1,0 +1,69 @@
+name: Tesseract OCR Docker CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'src/tesseract_ocr/**'
+      - '.github/workflows/tesseract-ocr-docker.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'src/tesseract_ocr/**'
+      - '.github/workflows/tesseract-ocr-docker.yml'
+  schedule:
+    - cron: "0 0 * * *" # Runs every day at midnight UTC
+  workflow_dispatch:
+
+jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Build Docker image
+        working-directory: src/tesseract_ocr
+        run: docker compose build
+
+      - name: Start services
+        working-directory: src/tesseract_ocr
+        run: docker compose up -d
+
+      - name: Wait for health check
+        run: |
+          for i in {1..30}; do
+            if curl -f http://localhost:8000/health; then
+              echo "Service is healthy"
+              break
+            fi
+            echo "Waiting for service to be healthy..."
+            sleep 10
+          done
+          if [ $i -eq 30 ]; then
+            echo "Service failed to become healthy"
+            exit 1
+          fi
+
+      - name: Test health endpoint
+        run: |
+          response=$(curl -s http://localhost:8000/health)
+          if [ "$response" != '{"status":"ok"}' ]; then
+            echo "Health check failed: $response"
+            exit 1
+          fi
+
+      - name: Test OCR endpoint
+        run: |
+          response=$(curl -s -X POST -F "file=@images/receipt.jpg" http://localhost:8000/ocr/)
+          result=$(echo "$response" | jq -r '.result')
+          if [ -z "$result" ] || [ "$result" = "null" ]; then
+            echo "OCR test failed: no result extracted"
+            exit 1
+          fi
+          echo "Extracted OCR text: $result"
+
+      - name: Stop services
+        working-directory: src/tesseract_ocr
+        run: docker compose down

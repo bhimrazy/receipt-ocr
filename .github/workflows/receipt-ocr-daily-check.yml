@@ -1,4 +1,4 @@
-name: Daily Check
+name: Receipt OCR Daily Check
 on:
   schedule:
     - cron: "0 0 * * *" # Runs every day at midnight UTC
