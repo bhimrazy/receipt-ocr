@@ -2,7 +2,7 @@ import numpy as np
 from fastapi import FastAPI, UploadFile
 from fastapi.responses import JSONResponse
 
-from .utils import perform_ocr
+from utils import perform_ocr
 
 app = FastAPI()
 
