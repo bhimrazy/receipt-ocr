@@ -2,10 +2,7 @@ import argparse
 import os
 
 import cv2
-import imutils
-import numpy as np
 import pytesseract
-from imutils.perspective import four_point_transform
 from .utils import process_receipt_image
 
 

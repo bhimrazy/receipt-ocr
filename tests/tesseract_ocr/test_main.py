@@ -4,17 +4,17 @@ import numpy as np
 
 
 # Patch the main function to avoid argparse.parse_args() being called directly
+@patch("src.tesseract_ocr.main.process_receipt_image")
+@patch("src.tesseract_ocr.main.pytesseract")
 @patch("src.tesseract_ocr.main.argparse.ArgumentParser")
 @patch("src.tesseract_ocr.main.os.path.exists")
 @patch("src.tesseract_ocr.main.cv2")
-@patch("src.tesseract_ocr.main.imutils")
-@patch("src.tesseract_ocr.main.pytesseract")
 def test_main_success(
-    mock_pytesseract,
-    mock_imutils,
     mock_cv2,
     mock_os_path_exists,
     mock_argparse_parser,
+    mock_pytesseract,
+    mock_process,
     capsys,
 ):
     # Setup mocks
@@ -25,22 +25,10 @@ def test_main_success(
     mock_args.image = "dummy_image.jpg"
     mock_argparse_parser.return_value.parse_args.return_value = mock_args
 
-    # Mock cv2 and imutils for image processing
+    # Mock cv2 for imread
     mock_cv2.imread.return_value = np.zeros((100, 100, 3), dtype=np.uint8)
-    mock_imutils.resize.return_value = np.zeros((50, 50, 3), dtype=np.uint8)
-    mock_cv2.cvtColor.return_value = np.zeros((50, 50), dtype=np.uint8)
-    mock_cv2.GaussianBlur.return_value = np.zeros((50, 50), dtype=np.uint8)
-    mock_cv2.Canny.return_value = np.zeros((50, 50), dtype=np.uint8)
 
-    # Mock contours to simulate a found receipt
-    mock_contour = np.array(
-        [[[0, 0]], [[0, 49]], [[49, 49]], [[49, 0]]], dtype=np.int32
-    )
-    mock_imutils.grab_contours.return_value = [mock_contour]
-    mock_cv2.contourArea.return_value = 1000
-    mock_cv2.arcLength.return_value = 200
-    mock_cv2.approxPolyDP.return_value = mock_contour
-
+    mock_process.return_value = np.zeros((100, 100, 3), dtype=np.uint8)
     mock_pytesseract.image_to_string.return_value = "Extracted Text from Main"
 
     # Import and call main after patching
@@ -74,17 +62,15 @@ def test_main_image_not_found(mock_os_path_exists, mock_argparse_parser):
         main()
 
 
+@patch("src.tesseract_ocr.main.process_receipt_image")
 @patch("src.tesseract_ocr.main.argparse.ArgumentParser")
 @patch("src.tesseract_ocr.main.os.path.exists")
 @patch("src.tesseract_ocr.main.cv2")
-@patch("src.tesseract_ocr.main.imutils")
-@patch("src.tesseract_ocr.main.pytesseract")
 def test_main_no_receipt_outline(
-    mock_pytesseract,
-    mock_imutils,
     mock_cv2,
     mock_os_path_exists,
     mock_argparse_parser,
+    mock_process,
 ):
     mock_os_path_exists.return_value = True
 
@@ -93,22 +79,10 @@ def test_main_no_receipt_outline(
     mock_argparse_parser.return_value.parse_args.return_value = mock_args
 
     mock_cv2.imread.return_value = np.zeros((100, 100, 3), dtype=np.uint8)
-    mock_imutils.resize.return_value = np.zeros((50, 50, 3), dtype=np.uint8)
-    mock_cv2.cvtColor.return_value = np.zeros((50, 50), dtype=np.uint8)
-    mock_cv2.GaussianBlur.return_value = np.zeros((50, 50), dtype=np.uint8)
-    mock_cv2.Canny.return_value = np.zeros((50, 50), dtype=np.uint8)
 
-    # No contours found that approximate to 4 points
-    mock_imutils.grab_contours.return_value = [
-        np.array([[[0, 0], [1, 1], [2, 2]]], dtype=np.int32)
-    ]
-    mock_cv2.contourArea.return_value = 1000
-    mock_cv2.arcLength.return_value = 200
-    mock_cv2.approxPolyDP.return_value = np.array(
-        [[[0, 0], [1, 1], [2, 2]]], dtype=np.int32
-    )
+    mock_process.side_effect = Exception("Could not find suitable receipt outline. Try debugging your edge detection and contour steps.")
 
     from src.tesseract_ocr.main import main
 
-    with pytest.raises(Exception, match="Could not find receipt outline."):
+    with pytest.raises(Exception, match="Could not find suitable receipt outline."):
         main()
