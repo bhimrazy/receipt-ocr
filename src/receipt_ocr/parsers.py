@@ -2,14 +2,10 @@ import json
 
 
 class ReceiptParser:
-    """
-    Parser for the LLM's response.
-    """
+    """Parser for the LLM's response."""
 
     def parse(self, response: str) -> dict:
-        """
-        Parse the LLM's response and return a JSON object.
-        """
+        """Parse the LLM's response and return a JSON object."""
         try:
             # The response is often wrapped in a code block
             response = response.strip()
