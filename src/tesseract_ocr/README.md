@@ -65,7 +65,7 @@ Replace `images/receipt.jpg` with the path to your receipt image.
 > Please ensure that the image is well-lit and that the edges of the receipt are clearly visible and detectable within the image.
 > <img src="https://github.com/bhimrazy/receipt-ocr/assets/46085301/2ea009f0-9e15-42b2-9f15-063a8ec169f1" alt="Receipt Image" width="300" height="400">
 
-### Using Docker-compose
+### Using API via Docker-compose
 
 The repository includes a Docker-compose setup for running the OCR engine as a service.
 

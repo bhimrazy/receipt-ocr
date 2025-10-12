@@ -1,13 +1,12 @@
-
 name: tesseract-ocr CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     # paths:
     #   - 'src/tesseract_ocr/**'
   pull_request:
-    branches: [ main ]
+    branches: [main]
     # paths:
     #   - 'src/tesseract_ocr/**'
   workflow_dispatch:
@@ -40,9 +39,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y tesseract-ocr libtesseract-dev
           tesseract --version
-          
+
       - name: Install dependencies
-        run: | 
+        run: |
           uv sync --all-extras --dev
           uv pip install -r src/tesseract_ocr/requirements.txt
           uv pip list

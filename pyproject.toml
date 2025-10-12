@@ -1,57 +1,55 @@
+[build-system]
+build-backend = "hatchling.build"
+
+requires = [ "hatchling" ]
 
 [project]
 name = "receipt-ocr"
-dynamic = ["version"]
 description = "A package for extracting structured data from receipts."
-authors = [{ name = "Bhimraj Yadav", email = "bhimrajyadav977@gmail.com" }]
-license = { file = "LICENSE" }
 readme = "README.md"
+keywords = [ "llm", "ocr", "receipts", "tesseract" ]
+license = { file = "LICENSE" }
+authors = [ { name = "Bhimraj Yadav", email = "bhimrajyadav977@gmail.com" } ]
 requires-python = ">=3.9"
 classifiers = [
-    "Environment :: Console",
-    "Natural Language :: English",
-    "Development Status :: 4 - Beta",
-    "Intended Audience :: Developers",
-    "Topic :: Scientific/Engineering :: Artificial Intelligence",
-    "Topic :: Scientific/Engineering :: Information Analysis",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Topic :: Software Development :: Libraries :: Python Modules",
+  "Development Status :: 4 - Beta",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: English",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "Topic :: Scientific/Engineering :: Information Analysis",
+  "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-keywords = ["ocr", "receipts", "llm", "tesseract"]
-dependencies = ["openai", "python-dotenv", "Pillow"]
+dynamic = [ "version" ]
+dependencies = [ "openai", "pillow", "python-dotenv" ]
 
-[project.urls]
-Homepage = "https://github.com/bhimrazy/receipt-ocr"
-"Bug Tracker" = "https://github.com/bhimrazy/receipt-ocr/issues"
-Documentation = "https://github.com/bhimrazy/receipt-ocr"
-"Source Code" = "https://github.com/bhimrazy/receipt-ocr"
-Download = "https://github.com/bhimrazy/receipt-ocr"
+urls."Bug Tracker" = "https://github.com/bhimrazy/receipt-ocr/issues"
+urls.Documentation = "https://github.com/bhimrazy/receipt-ocr"
+urls.Download = "https://github.com/bhimrazy/receipt-ocr"
+urls.Homepage = "https://github.com/bhimrazy/receipt-ocr"
+urls."Source Code" = "https://github.com/bhimrazy/receipt-ocr"
+scripts.receipt-ocr = "receipt_ocr.cli:main"
 
-[project.scripts]
-receipt-ocr = "receipt_ocr.cli:main"
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+[dependency-groups]
+dev = [ "codecov", "coverage", "pillow", "pytest", "pytest-cov" ]
 
 [tool.hatch.version]
 path = "src/receipt_ocr/__about__.py"
 pattern = "__version__ = \"(?P<version>.+)\""
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/receipt_ocr"]
+packages = [ "src/receipt_ocr" ]
 
 [tool.hatch.metadata]
 allow-direct-references = true
 
 [tool.pytest.ini_options]
-pythonpath = ["src"]
-
-[dependency-groups]
-dev = ["pytest", "coverage", "codecov", "pytest-cov", "Pillow"]
+pythonpath = [ "src" ]

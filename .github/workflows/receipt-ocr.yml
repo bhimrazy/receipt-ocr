@@ -1,13 +1,12 @@
-
 name: receipt-ocr CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     # paths:
     #   - 'src/receipt_ocr/**'
   pull_request:
-    branches: [ main ]
+    branches: [main]
     # paths:
     #   - 'src/receipt_ocr/**'
   workflow_dispatch:
@@ -36,7 +35,7 @@ jobs:
           enable-cache: true
 
       - name: Install dependencies
-        run: | 
+        run: |
           uv sync --all-extras --dev
           uv pip list
 

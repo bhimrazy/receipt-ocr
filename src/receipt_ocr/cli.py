@@ -9,29 +9,21 @@ load_dotenv()
 
 
 class ReceiptProcessor:
-    """
-    Process a receipt image and return a structured JSON object.
-    """
+    """Process a receipt image and return a structured JSON object."""
 
     def __init__(self, provider, parser):
-        """
-        Initialize the receipt processor.
-        """
+        """Initialize the receipt processor."""
         self.provider = provider
         self.parser = parser
 
     def process_receipt(self, image_path: str, json_schema: dict, model: str) -> dict:
-        """
-        Process a receipt image and return a structured JSON object.
-        """
+        """Process a receipt image and return a structured JSON object."""
         response = self.provider.get_response(image_path, json_schema, model)
         return self.parser.parse(response)
 
 
 def main():
-    """
-    Main function for the CLI.
-    """
+    """Main function for the CLI."""
     parser = argparse.ArgumentParser(
         description="Extract information from a receipt image."
     )

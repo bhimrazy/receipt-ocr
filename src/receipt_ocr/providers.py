@@ -8,35 +8,25 @@ from receipt_ocr.prompts import SYSTEM_PROMPT, USER_PROMPT
 
 
 class LLMProvider(ABC):
-    """
-    Abstract base class for LLM providers.
-    """
+    """Abstract base class for LLM providers."""
 
     @abstractmethod
     def get_response(self, image_path: str, json_schema: dict, model: str) -> str:
-        """
-        Get the response from the LLM provider.
-        """
+        """Get the response from the LLM provider."""
         pass
 
 
 class OpenAIProvider(LLMProvider):
-    """
-    LLM provider for OpenAI-compatible APIs.
-    """
+    """LLM provider for OpenAI-compatible APIs."""
 
     def __init__(self, api_key: str = None, base_url: str = None):
-        """
-        Initialize the OpenAI provider.
-        """
+        """Initialize the OpenAI provider."""
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         self.base_url = base_url or os.getenv("OPENAI_BASE_URL")
         self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)
 
     def get_response(self, image_path: str, json_schema: dict, model: str) -> str:
-        """
-        Get the response from the OpenAI API.
-        """
+        """Get the response from the OpenAI API."""
         # Load the image
         image = Image.open(image_path)
 
