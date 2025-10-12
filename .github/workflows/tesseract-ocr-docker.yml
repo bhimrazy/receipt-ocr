@@ -2,15 +2,15 @@ name: Tesseract OCR Docker CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'src/tesseract_ocr/**'
-      - '.github/workflows/tesseract-ocr-docker.yml'
+      - "src/tesseract_ocr/**"
+      - ".github/workflows/tesseract-ocr-docker.yml"
   pull_request:
-    branches: [ main ]
+    branches: [main]
     paths:
-      - 'src/tesseract_ocr/**'
-      - '.github/workflows/tesseract-ocr-docker.yml'
+      - "src/tesseract_ocr/**"
+      - ".github/workflows/tesseract-ocr-docker.yml"
   schedule:
     - cron: "0 0 * * *" # Runs every day at midnight UTC
   workflow_dispatch:
