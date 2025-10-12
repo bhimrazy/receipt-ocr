@@ -80,7 +80,9 @@ def test_main_no_receipt_outline(
 
     mock_cv2.imread.return_value = np.zeros((100, 100, 3), dtype=np.uint8)
 
-    mock_process.side_effect = Exception("Could not find suitable receipt outline. Try debugging your edge detection and contour steps.")
+    mock_process.side_effect = Exception(
+        "Could not find suitable receipt outline. Try debugging your edge detection and contour steps."
+    )
 
     from src.tesseract_ocr.main import main
 

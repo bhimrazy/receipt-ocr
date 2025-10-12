@@ -6,8 +6,8 @@ from imutils.perspective import four_point_transform
 
 
 def _evaluate_contour_candidate(contour, image_shape):
-    """
-    Evaluate a contour candidate for receipt detection based on multiple criteria.
+    """Evaluate a contour candidate for receipt detection based on multiple
+    criteria.
 
     Args:
         contour: The contour to evaluate
@@ -41,10 +41,10 @@ def _evaluate_contour_candidate(contour, image_shape):
     contour_center_y = y + h / 2
 
     distance_from_center = np.sqrt(
-        (contour_center_x - image_center_x) ** 2 +
-        (contour_center_y - image_center_y) ** 2
+        (contour_center_x - image_center_x) ** 2
+        + (contour_center_y - image_center_y) ** 2
     )
-    max_distance = np.sqrt(image_center_x ** 2 + image_center_y ** 2)
+    max_distance = np.sqrt(image_center_x**2 + image_center_y**2)
     position_score = 1 - (distance_from_center / max_distance)
 
     # Size score (prefer contours that are reasonably large but not too dominant)
@@ -65,19 +65,19 @@ def _evaluate_contour_candidate(contour, image_shape):
 
     # Combined score
     total_score = (
-        position_score * 0.2 +
-        size_score * 0.3 +
-        aspect_score * 0.3 +
-        solidity_score * 0.2
+        position_score * 0.2
+        + size_score * 0.3
+        + aspect_score * 0.3
+        + solidity_score * 0.2
     )
 
     return {
-        'contour': approx,
-        'score': total_score,
-        'area': area,
-        'aspect_ratio': aspect_ratio,
-        'solidity': solidity,
-        'bounding_rect': (x, y, w, h)
+        "contour": approx,
+        "score": total_score,
+        "area": area,
+        "aspect_ratio": aspect_ratio,
+        "solidity": solidity,
+        "bounding_rect": (x, y, w, h),
     }
 
 
@@ -98,8 +98,8 @@ def perform_ocr(img: np.ndarray):
 
 
 def process_receipt_image(img_orig):
-    """
-    Process the receipt image to extract the receipt area using robust methods.
+    """Process the receipt image to extract the receipt area using robust
+    methods.
 
     Args:
         img_orig: Original image as numpy array
@@ -132,7 +132,9 @@ def process_receipt_image(img_orig):
     # order
     cnts = cv2.findContours(edged.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     cnts = imutils.grab_contours(cnts)
-    cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[:10]  # Consider top 10 contours
+    cnts = sorted(cnts, key=cv2.contourArea, reverse=True)[
+        :10
+    ]  # Consider top 10 contours
 
     # Evaluate contour candidates
     candidates = []
@@ -151,10 +153,10 @@ def process_receipt_image(img_orig):
         )
 
     # Sort by score and select the best
-    candidates.sort(key=lambda x: x['score'], reverse=True)
+    candidates.sort(key=lambda x: x["score"], reverse=True)
     best_candidate = candidates[0]
 
-    receiptCnt = best_candidate['contour']
+    receiptCnt = best_candidate["contour"]
 
     # apply a four-point perspective transform to the *original* image to
     # obtain a top-down bird's-eye view of the receipt
@@ -162,15 +164,16 @@ def process_receipt_image(img_orig):
     # To make the transformation robust to small edge imperfections,
     # use the bounding box corners instead of the exact contour points
     x, y, w, h = cv2.boundingRect(points.astype(np.int32))
-    warped_points = np.array([[x, y], [x + w, y], [x + w, y + h], [x, y + h]], dtype=np.float32)
+    warped_points = np.array(
+        [[x, y], [x + w, y], [x + w, y + h], [x, y + h]], dtype=np.float32
+    )
     receipt = _robust_perspective_transform(img_orig, warped_points)
 
     return receipt
 
 
 def _robust_perspective_transform(image, src_points, dst_points=None):
-    """
-    Apply robust perspective transformation using RANSAC.
+    """Apply robust perspective transformation using RANSAC.
 
     Args:
         image: Input image
@@ -194,12 +197,10 @@ def _robust_perspective_transform(image, src_points, dst_points=None):
         dst_w = max_dim
         dst_h = int(max_dim * aspect_ratio)
 
-        dst_points = np.array([
-            [0, 0],
-            [dst_w - 1, 0],
-            [dst_w - 1, dst_h - 1],
-            [0, dst_h - 1]
-        ], dtype=np.float32)
+        dst_points = np.array(
+            [[0, 0], [dst_w - 1, 0], [dst_w - 1, dst_h - 1], [0, dst_h - 1]],
+            dtype=np.float32,
+        )
 
     # Find homography using RANSAC
     H, mask = cv2.findHomography(src_points, dst_points, cv2.RANSAC, 5.0)
@@ -209,14 +210,15 @@ def _robust_perspective_transform(image, src_points, dst_points=None):
         return four_point_transform(image, src_points)
 
     # Apply perspective transformation
-    warped = cv2.warpPerspective(image, H, (int(dst_points[1][0] + 1), int(dst_points[2][1] + 1)))
+    warped = cv2.warpPerspective(
+        image, H, (int(dst_points[1][0] + 1), int(dst_points[2][1] + 1))
+    )
 
     return warped
 
 
 def _detect_and_correct_orientation(image):
-    """
-    Detect image orientation and rotate if necessary.
+    """Detect image orientation and rotate if necessary.
 
     Args:
         image: Input image
@@ -230,9 +232,9 @@ def _detect_and_correct_orientation(image):
 
         # Extract rotation angle
         rotation = 0
-        for line in osd.split('\n'):
-            if 'Rotate:' in line:
-                rotation = int(line.split(':')[1].strip())
+        for line in osd.split("\n"):
+            if "Rotate:" in line:
+                rotation = int(line.split(":")[1].strip())
                 break
 
         # Rotate image if needed
