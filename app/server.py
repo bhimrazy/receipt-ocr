@@ -35,6 +35,7 @@ MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5 MB
 
 class OCRRequest(BaseModel):
     """Request model for OCR processing."""
+
     schema: Optional[Dict] = None
 
 
@@ -62,8 +63,7 @@ async def ocr_receipt(
     file: UploadFile,
     schema: Optional[Dict] = None,
 ):
-    """
-    Extract structured data from a receipt image using LLM processing.
+    """Extract structured data from a receipt image using LLM processing.
 
     - **file**: Receipt image file (JPEG, PNG, etc., max 5MB)
     - **schema**: Optional custom JSON schema as dict
