@@ -31,6 +31,7 @@ DEFAULT_SCHEMA = {
 }
 MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5 MB
 
+
 @app.get("/")
 async def root():
     return {
@@ -53,12 +54,12 @@ async def health_check():
 @app.post("/ocr/")
 async def ocr_receipt(
     file: UploadFile,
-    schema: Optional[Dict] = None,
+    output_schema: Optional[Dict] = None,
 ):
     """Extract structured data from a receipt image using LLM processing.
 
     - **file**: Receipt image file (JPEG, PNG, etc., max 5MB)
-    - **schema**: Optional custom JSON schema as dict
+    - **output_schema**: Optional custom JSON schema as dict
     """
     try:
         # Validation: Check content type
@@ -78,21 +79,10 @@ async def ocr_receipt(
         image_bytes = file.file.read()
 
         # Use provided schema or default
-        json_schema = schema if schema is not None else DEFAULT_SCHEMA
-
-        # Use model from environment
-        llm_model = os.getenv("OPENAI_MODEL", "gpt-4o")
+        json_schema = output_schema if output_schema is not None else DEFAULT_SCHEMA
 
         # Process the receipt using the processor
-        result = processor.process_receipt_bytes(image_bytes, json_schema, llm_model)
-
-        # Add metadata
-        result["_metadata"] = {
-            "model_used": llm_model,
-            "custom_schema": schema is not None,
-            "processing_time": "N/A",  # Could add timing later
-        }
-
+        result = processor.process_receipt(image_bytes, json_schema)
         return JSONResponse(content=result, status_code=200)
 
     except HTTPException:
