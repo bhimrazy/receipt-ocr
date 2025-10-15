@@ -1,0 +1,1 @@
+_DEFAULT_OPENAI_MODEL = "gpt-4.1"

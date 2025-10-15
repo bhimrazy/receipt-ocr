@@ -1,17 +1,24 @@
+import json
 import os
 from abc import ABC, abstractmethod
+from typing import Any, Optional, Union
+
 from openai import OpenAI
+from openai.types.chat.chat_completion import ChatCompletion
 from PIL import Image
-import base64
-import io
+
+from receipt_ocr.constants import _DEFAULT_OPENAI_MODEL
 from receipt_ocr.prompts import SYSTEM_PROMPT, USER_PROMPT
+from receipt_ocr.utils import encode_image_to_base64
 
 
 class LLMProvider(ABC):
     """Abstract base class for LLM providers."""
 
     @abstractmethod
-    def get_response(self, image_path: str, json_schema: dict, model: str) -> str:
+    def get_response(
+        self, image: Union[str, bytes, Image.Image], json_schema: dict, model: str
+    ) -> Any:
         """Get the response from the LLM provider."""
         pass
 
@@ -25,21 +32,23 @@ class OpenAIProvider(LLMProvider):
         self.base_url = base_url or os.getenv("OPENAI_BASE_URL")
         self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)
 
-    def get_response(self, image_path: str, json_schema: dict, model: str) -> str:
+    def get_response(
+        self,
+        image: Union[str, bytes, Image.Image],
+        json_schema: dict,
+        model: Optional[str] = None,
+    ) -> ChatCompletion:
         """Get the response from the OpenAI API."""
-        # Load the image
-        image = Image.open(image_path)
-
-        # Convert the image to base64
-        buffered = io.BytesIO()
-        image.save(buffered, format="PNG")
-        img_str = base64.b64encode(buffered.getvalue()).decode("utf-8")
+        # Encode image to base64 using utility function
+        img_str = encode_image_to_base64(image)
 
         # Create the system prompt
-        system_prompt = SYSTEM_PROMPT
+        system_prompt = SYSTEM_PROMPT.format(
+            json_schema_content=json.dumps(json_schema, indent=2)
+        )
 
         response = self.client.chat.completions.create(
-            model=model,
+            model=model or os.getenv("OPENAI_MODEL", _DEFAULT_OPENAI_MODEL),
             response_format={"type": "json_object"},
             temperature=0.2,
             messages=[
@@ -60,4 +69,4 @@ class OpenAIProvider(LLMProvider):
             ],
         )
 
-        return response.choices[0].message.content
+        return response
