@@ -57,3 +57,6 @@ jobs:
           name: codecov-umbrella
           fail_ci_if_error: false
           slug: bhimrazy/receipt-ocr
+
+      - name: Minimize uv cache
+        run: uv cache prune --ci
