@@ -183,7 +183,7 @@ This module provides direct OCR capabilities using Tesseract. For more detailed 
 
     - **POST** `/ocr/`: Upload a receipt image file to perform OCR. The response will contain the extracted text from the receipt.
 
-    > **Note:** The Tesseract OCR API returns raw extracted text from the receipt image. For structured JSON output with parsed fields such as merchant name, line items, and totals, use the `receipt-ocr` CLI command instead.
+    > **Note:** The Tesseract OCR API returns raw extracted text from the receipt image. For structured JSON output with parsed fields such as merchant name, line items, and totals, use the `receipt-ocr` instead.
 
     **Example usage with cURL:**
 
