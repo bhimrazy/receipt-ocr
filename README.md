@@ -118,6 +118,44 @@ pip install receipt-ocr
     }
     ```
 
+3.  **Using Receipt OCR Programmatically in Python:**
+
+    You can also use the `receipt-ocr` library directly in your Python code:
+
+    ```python
+    from receipt_ocr.processors import ReceiptProcessor
+    from receipt_ocr.providers import OpenAIProvider
+
+    # Initialize the provider
+    provider = OpenAIProvider(api_key="your_api_key", base_url="your_base_url")
+
+    # Initialize the processor
+    processor = ReceiptProcessor(provider)
+
+    # Define the JSON schema for extraction
+    json_schema = {
+        "merchant_name": "string",
+        "merchant_address": "string",
+        "transaction_date": "string",
+        "transaction_time": "string",
+        "total_amount": "number",
+        "line_items": [
+            {
+                "item_name": "string",
+                "item_quantity": "number",
+                "item_price": "number",
+            }
+        ],
+    }
+
+    # Process the receipt
+    result = processor.process_receipt("path/to/receipt.jpg", json_schema, "gpt-4.1")
+
+    print(result)
+    ```
+
+    This will output the same structured JSON as the CLI.
+
 ### Tesseract OCR Module
 
 This module provides direct OCR capabilities using Tesseract. For more detailed local setup and usage, refer to [`src/tesseract_ocr/README.md`](src/tesseract_ocr/README.md).
