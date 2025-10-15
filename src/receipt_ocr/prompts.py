@@ -17,7 +17,7 @@ Here is an example of a desired JSON output:
       "item_price": 20.00,
       "item_total": 40.00
     }},
-    {
+    {{
       "item_name": "Item 2",
       "item_quantity": 1,
       "item_price": 35.50,
@@ -30,7 +30,7 @@ Here is an example of a desired JSON output:
 Please extract the information from the receipt image and provide it in the following JSON schema:
 
 ```json
-{{json_schema_content}}
+{json_schema_content}
 ```
 """
 
