@@ -30,15 +30,10 @@ jobs:
       - name: Create .env file for testing
         working-directory: app
         run: |
-          if [ -n "${{ secrets.OPENAI_API_KEY }}" ]; then
-            echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
-            echo "Using real OpenAI API key for testing"
-          else
-            echo "OPENAI_API_KEY=dummy_key_for_ci_testing" > .env
-            echo "Using dummy API key (OCR test will expect graceful failure)"
-          fi
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
           echo "OPENAI_BASE_URL=https://api.openai.com/v1" >> .env
           echo "OPENAI_MODEL=gpt-4o-mini" >> .env
+          cat .env
 
       - name: Start services
         working-directory: app
@@ -70,20 +65,35 @@ jobs:
 
       - name: Test OCR endpoint
         run: |
-          response=$(curl -s -X POST -F "file=@../images/receipt.jpg" http://localhost:8000/ocr/)
+          response=$(curl -s -X POST -F "file=@images/receipt.jpg" http://localhost:8000/ocr/)
           # Check that we get a JSON response
           if echo "$response" | jq -e . >/dev/null 2>&1; then
             echo "OCR endpoint returned valid JSON response"
-            # Check for expected response structure (either success or error)
-            status_code=$(echo "$response" | jq -r '.status_code // 200')
-            if [ "$status_code" = "200" ]; then
-              echo "OCR processing completed (may succeed or fail depending on API key)"
+            # Check if it looks like a successful response or error
+            if echo "$response" | jq -e '.merchant_name' >/dev/null 2>&1; then
+              echo "Response contains merchant_name (likely successful OCR)"
             else
-              detail=$(echo "$response" | jq -r '.detail // "Unknown error"')
-              echo "OCR returned error (expected with dummy API key): $detail"
+              echo "Response does not contain merchant_name (may be error or different format)"
             fi
           else
             echo "OCR endpoint failed to return valid JSON: $response"
+            exit 1
+          fi
+
+      - name: Test OCR endpoint with custom schema
+        run: |
+          response=$(curl -s -X POST -F "file=@images/receipt.jpg" -F 'json_schema={"merchant": "string", "total": "number"}' http://localhost:8000/ocr/)
+          # Check that we get a JSON response
+          if echo "$response" | jq -e . >/dev/null 2>&1; then
+            echo "OCR endpoint with custom schema returned valid JSON response"
+            # Check if it looks like a successful response or error
+            if echo "$response" | jq -e '.merchant' >/dev/null 2>&1; then
+              echo "Response contains merchant field from custom schema"
+            else
+              echo "Response does not contain expected custom schema fields"
+            fi
+          else
+            echo "OCR endpoint with custom schema failed to return valid JSON: $response"
             exit 1
           fi
 
