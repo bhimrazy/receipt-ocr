@@ -1,13 +1,13 @@
 name: Receipt OCR Daily Check
 on:
-  push:
-    branches: [main]
-    paths:
-      - "src/receipt_ocr/**"
-  pull_request:
-    branches: [main]
-    paths:
-      - "src/receipt_ocr/**"
+  # push:
+  #   branches: [main]
+  #   paths:
+  #     - "src/receipt_ocr/**"
+  # pull_request:
+  #   branches: [main]
+  #   paths:
+  #     - "src/receipt_ocr/**"
   schedule:
     - cron: "0 0 * * *" # Runs every day at midnight UTC
   workflow_dispatch:
