@@ -85,7 +85,9 @@ async def ocr_receipt(
             try:
                 schema_to_use = json.loads(json_schema)
             except json.JSONDecodeError:
-                raise HTTPException(status_code=400, detail="Invalid JSON schema format")
+                raise HTTPException(
+                    status_code=400, detail="Invalid JSON schema format"
+                )
 
         # Process the receipt using the processor
         result = processor.process_receipt(image_bytes, schema_to_use)
