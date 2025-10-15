@@ -8,10 +8,3 @@ services:
       - "8000:8000"
     env_file:
       - .env
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health').raise_for_status()"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
