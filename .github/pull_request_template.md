@@ -1,15 +1,11 @@
 ## What does this PR do?
 
-A brief description of the change.
+- Briefly describe the changes.
 
-## Description
+**Related Issue:**
 
-A more detailed description of the change.
+- Link to the issue or task this PR addresses ( e.g., `Fixes #123`).
 
-## Fixes
+**Additional Notes:**
 
-Fixes # (issue)
-
-______________________________________________________________________
-
-*Make sure you had fun contributing!* 🎉
+- Any extra information?
