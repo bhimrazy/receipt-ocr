@@ -40,7 +40,7 @@ uv run fastapi run server.py
 
 # Or using Docker (from app directory)
 cd app
-docker-compose up
+docker compose up
 ```
 
 ### 4. Test the API
