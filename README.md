@@ -30,8 +30,7 @@ The project is organized into two main modules:
 ## Prerequisites
 
 - Python 3.x
-- Docker (for running Tesseract OCR as a service)
-- Docker-compose (for running Tesseract OCR as a service)
+- Docker & Docker-compose(for running as a service)
 - Tesseract OCR (for local Tesseract CLI usage) - [Installation Guide](https://tesseract-ocr.github.io/tessdoc/Installation.html)
 
 ## Usage Examples
