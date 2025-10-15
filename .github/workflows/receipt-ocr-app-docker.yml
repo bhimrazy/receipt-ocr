@@ -1,0 +1,91 @@
+name: Receipt OCR App Docker CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - ".github/workflows/receipt-ocr-app-docker.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "app/**"
+      - ".github/workflows/receipt-ocr-app-docker.yml"
+  schedule:
+    - cron: "0 0 * * *" # Runs every day at midnight UTC
+  workflow_dispatch:
+
+jobs:
+  docker-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Build Docker image
+        working-directory: app
+        run: docker compose build
+
+      - name: Create .env file for testing
+        working-directory: app
+        run: |
+          echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
+          echo "OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}" >> .env
+          echo "OPENAI_MODEL=${{ secrets.OPENAI_MODEL }}" >> .env
+
+      - name: Start services
+        working-directory: app
+        run: docker compose up -d
+
+      - name: Wait for health check
+        run: |
+          for i in {1..30}; do
+            if curl -f http://localhost:8000/health; then
+              echo "Service is healthy"
+              break
+            fi
+            echo "Waiting for service to be healthy..."
+            sleep 10
+          done
+          if [ $i -eq 30 ]; then
+            echo "Service failed to become healthy"
+            exit 1
+          fi
+
+      - name: Test health endpoint
+        run: |
+          response=$(curl -s http://localhost:8000/health)
+          expected='{"status":"ok","service":"receipt-ocr-api"}'
+          if [ "$response" != "$expected" ]; then
+            echo "Health check failed. Expected: $expected, Got: $response"
+            exit 1
+          fi
+
+      - name: Test OCR endpoint
+        run: |
+          echo "Testing OCR endpoint with default schema..."
+          response=$(curl -s -X POST -F "file=@images/receipt.jpg" http://localhost:8000/ocr/)
+          if echo "$response" | jq -e . >/dev/null 2>&1; then
+            echo "✅ Valid JSON response received"
+            echo "Response: $response"
+          else
+            echo "❌ Invalid JSON response: $response"
+            exit 1
+          fi
+
+      - name: Test OCR endpoint with custom schema
+        run: |
+          echo "Testing OCR endpoint with custom schema..."
+          response=$(curl -s -X POST -F "file=@images/receipt.jpg" -F 'json_schema={"merchant": "string", "total": "number"}' http://localhost:8000/ocr/)
+          if echo "$response" | jq -e . >/dev/null 2>&1; then
+            echo "✅ Valid JSON response received"
+            echo "Response: $response"
+          else
+            echo "❌ Invalid JSON response: $response"
+            exit 1
+          fi
+
+      - name: Stop services
+        working-directory: app
+        run: docker compose down

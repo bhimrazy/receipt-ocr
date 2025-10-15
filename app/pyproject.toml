@@ -1,0 +1,20 @@
+[project]
+name = "receipt-ocr-api"
+version = "0.1.0"
+description = "FastAPI service for Receipt OCR"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+]
+dependencies = [
+  "fastapi[standard]",
+  "pillow",
+  "python-dotenv",
+  "python-multipart",
+  "receipt-ocr>=0.2.2",
+]

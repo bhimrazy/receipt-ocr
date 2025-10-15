@@ -1,0 +1,10 @@
+services:
+  receipt-ocr-api:
+    container_name: receipt-ocr-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env

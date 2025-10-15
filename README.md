@@ -24,7 +24,7 @@ This repository provides a comprehensive solution for Optical Character Recognit
 
 The project is organized into two main modules:
 
-- **`src/receipt_ocr/`**: A new package for abstracting general receipt processing logic, including CLI, parsers, prompts, and providers for various LLM services to extract structured data from receipts.
+- **`src/receipt_ocr/`**: A new package for abstracting general receipt processing logic, including CLI, programmatic API, and a production [FastAPI web service](./app/) for LLM-powered structured data extraction from receipts.
 - **`src/tesseract_ocr/`**: Contains the Tesseract OCR FastAPI application, CLI, utility functions, and Docker setup for performing raw OCR text extraction from images.
 
 ## Prerequisites
@@ -156,6 +156,37 @@ pip install receipt-ocr
 
     This will output the same structured JSON as the CLI.
 
+4.  **Run Receipt OCR as a Docker web service:**
+
+    For a production-ready REST API, use the FastAPI web service:
+
+    ```bash
+    docker compose -f app/docker-compose.yml up
+    ```
+
+    The service provides REST endpoints for receipt processing:
+
+    - `GET /health` - Health check
+    - `POST /ocr/` - Process receipt images with optional custom JSON schemas
+
+    **Example API usage:**
+
+    ```bash
+    # Health check
+    curl http://localhost:8000/health
+
+    # Process receipt with default schema
+    curl -X POST "http://localhost:8000/ocr/" \
+      -F "file=@images/receipt.jpg"
+
+    # Process with custom schema
+    curl -X POST "http://localhost:8000/ocr/" \
+      -F "file=@images/receipt.jpg" \
+      -F 'json_schema={"merchant": "string", "total": "number"}'
+    ```
+
+    For detailed API documentation, visit `http://localhost:8000/docs` when the service is running.
+
 ### Tesseract OCR Module
 
 This module provides direct OCR capabilities using Tesseract. For more detailed local setup and usage, refer to [`src/tesseract_ocr/README.md`](src/tesseract_ocr/README.md).
@@ -174,7 +205,7 @@ This module provides direct OCR capabilities using Tesseract. For more detailed 
 2.  **Run Tesseract OCR as a Docker service:**
 
     ```bash
-    docker-compose -f src/tesseract_ocr/docker-compose.yml up
+    docker compose -f src/tesseract_ocr/docker-compose.yml up
     ```
 
     Once the service is up and running, you can perform OCR on receipt images by sending a POST request to `http://localhost:8000/ocr/` with the image file.
@@ -183,7 +214,7 @@ This module provides direct OCR capabilities using Tesseract. For more detailed 
 
     - **POST** `/ocr/`: Upload a receipt image file to perform OCR. The response will contain the extracted text from the receipt.
 
-    > **Note:** The Tesseract OCR API returns raw extracted text from the receipt image. For structured JSON output with parsed fields such as merchant name, line items, and totals, use the `receipt-ocr` CLI command instead.
+    > **Note:** The Tesseract OCR API returns raw extracted text from the receipt image. For structured JSON output with parsed fields such as merchant name, line items, and totals, use the `receipt-ocr` instead.
 
     **Example usage with cURL:**
 
