@@ -1,7 +1,7 @@
 import json
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException, UploadFile
+from fastapi import FastAPI, HTTPException, UploadFile, Form
 from fastapi.responses import JSONResponse
 
 from receipt_ocr.processors import ReceiptProcessor
@@ -55,7 +55,7 @@ async def health_check():
 @app.post("/ocr/")
 async def ocr_receipt(
     file: UploadFile,
-    json_schema: Optional[str] = None,
+    json_schema: Optional[str] = Form(default=None),
 ):
     """Extract structured data from a receipt image using LLM processing.
 
