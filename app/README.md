@@ -87,12 +87,7 @@ Extract structured data from a receipt image.
       "item_quantity": 1,
       "item_price": 25.99
     }
-  ],
-  "_metadata": {
-    "model_used": "gpt-4o",
-    "custom_schema": false,
-    "processing_time": "N/A"
-  }
+  ]
 }
 ```
 
