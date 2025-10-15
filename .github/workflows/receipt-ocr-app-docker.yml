@@ -66,7 +66,7 @@ jobs:
       - name: Test OCR endpoint
         run: |
           echo "Testing OCR endpoint with default schema..."
-          response=$(curl -s -X POST -F "file=@../images/receipt.jpg" http://localhost:8000/ocr/)
+          response=$(curl -s -X POST -F "file=@images/receipt.jpg" http://localhost:8000/ocr/)
           if echo "$response" | jq -e . >/dev/null 2>&1; then
             echo "✅ Valid JSON response received"
             echo "Response: $response"
@@ -78,7 +78,7 @@ jobs:
       - name: Test OCR endpoint with custom schema
         run: |
           echo "Testing OCR endpoint with custom schema..."
-          response=$(curl -s -X POST -F "file=@../images/receipt.jpg" -F 'json_schema={"merchant": "string", "total": "number"}' http://localhost:8000/ocr/)
+          response=$(curl -s -X POST -F "file=@images/receipt.jpg" -F 'json_schema={"merchant": "string", "total": "number"}' http://localhost:8000/ocr/)
           if echo "$response" | jq -e . >/dev/null 2>&1; then
             echo "✅ Valid JSON response received"
             echo "Response: $response"
