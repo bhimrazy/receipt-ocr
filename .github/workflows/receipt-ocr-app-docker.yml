@@ -31,8 +31,8 @@ jobs:
         working-directory: app
         run: |
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
-          echo "OPENAI_BASE_URL=https://api.openai.com/v1" >> .env
-          echo "OPENAI_MODEL=gpt-4o-mini" >> .env
+          echo "OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}" >> .env
+          echo "OPENAI_MODEL=${{ secrets.OPENAI_MODEL }}" >> .env
           cat .env
 
       - name: Start services
