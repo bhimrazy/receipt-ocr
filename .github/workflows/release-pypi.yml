@@ -34,3 +34,6 @@ jobs:
         env:
           UV_PUBLISH_TOKEN: ${{ secrets.pypi_password }}
         run: uv publish
+
+      - name: Minimize uv cache
+        run: uv cache prune --ci

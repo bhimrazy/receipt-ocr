@@ -87,3 +87,6 @@ jobs:
               print("Programmatic test failed: invalid or missing structured data")
               exit(1)
           EOF
+
+      - name: Minimize uv cache
+        run: uv cache prune --ci
