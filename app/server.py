@@ -3,7 +3,6 @@ from typing import Dict, Optional
 
 from fastapi import FastAPI, HTTPException, UploadFile
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
 from receipt_ocr.processors import ReceiptProcessor
 
 # Initialize processor once (not on each request)
@@ -31,13 +30,6 @@ DEFAULT_SCHEMA = {
     ],
 }
 MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5 MB
-
-
-class OCRRequest(BaseModel):
-    """Request model for OCR processing."""
-
-    schema: Optional[Dict] = None
-
 
 @app.get("/")
 async def root():
