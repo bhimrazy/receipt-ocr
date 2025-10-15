@@ -789,16 +789,16 @@ wheels = [
 
 [[package]]
 name = "receipt-ocr"
-version = "0.2.0"
+version = "0.2.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "openai" },
     { name = "pillow" },
     { name = "python-dotenv" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c7/06/c0183a2352785380a020f3a3fc620e1c668854c2d3c147fba301b9d40fbd/receipt_ocr-0.2.0.tar.gz", hash = "sha256:7f1bbd9ba52225e7c0615ba90b1f3d9ae2aa8f61a41a075262123a9e8723da1c", size = 2020380, upload-time = "2025-08-24T19:57:03.918Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/78/cd/510ee2e60291b76bea3423c178905ad71b765e851f1f5260d57c1b04cb0c/receipt_ocr-0.2.1.tar.gz", hash = "sha256:2b6e6f32be6d73253e387d13800bb6d25f4e065b287c56e396b76c872a91d3e0", size = 519895, upload-time = "2025-10-15T14:50:48.737Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/bb/3f/2506e1aec1f6faeb1fa8b8422cbe34f85285c2bef398f2e725da77948dd4/receipt_ocr-0.2.0-py3-none-any.whl", hash = "sha256:b89073f22f10ea9a54b18707f589d9c8fc96f5c95b57abc70d2c3d2f2754823a", size = 9403, upload-time = "2025-08-24T19:57:02.257Z" },
+    { url = "https://files.pythonhosted.org/packages/45/aa/2e89bc9568b8197d9a7d36b4723fa80720c326ba0ed82d06c3937bfadaf4/receipt_ocr-0.2.1-py3-none-any.whl", hash = "sha256:494cc9c6c5e6f6b0bf60f74a34d68f074d4d6e68b1140634927b7275fb4c5c9b", size = 11312, upload-time = "2025-10-15T14:50:47.468Z" },
 ]
 
 [[package]]
@@ -819,7 +819,7 @@ requires-dist = [
     { name = "pillow" },
     { name = "python-dotenv" },
     { name = "python-multipart" },
-    { name = "receipt-ocr" },
+    { name = "receipt-ocr", specifier = ">=0.2.1" },
 ]
 
 [[package]]
