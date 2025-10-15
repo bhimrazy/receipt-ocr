@@ -24,8 +24,8 @@ This repository provides a comprehensive solution for Optical Character Recognit
 
 The project is organized into two main modules:
 
-- **`src/receipt_ocr/`**: A new package for abstracting general receipt processing logic, including CLI, parsers, prompts, and providers for various LLM services.
-- **`src/tesseract_ocr/`**: Contains the Tesseract OCR FastAPI application, CLI, utility functions, and Docker setup for performing OCR.
+- **`src/receipt_ocr/`**: A new package for abstracting general receipt processing logic, including CLI, parsers, prompts, and providers for various LLM services to extract structured data from receipts.
+- **`src/tesseract_ocr/`**: Contains the Tesseract OCR FastAPI application, CLI, utility functions, and Docker setup for performing raw OCR text extraction from images.
 
 ## Prerequisites
 
@@ -144,6 +144,8 @@ This module provides direct OCR capabilities using Tesseract. For more detailed 
     **API Endpoint:**
 
     - **POST** `/ocr/`: Upload a receipt image file to perform OCR. The response will contain the extracted text from the receipt.
+
+    > **Note:** The Tesseract OCR API returns raw extracted text from the receipt image. For structured JSON output with parsed fields such as merchant name, line items, and totals, use the `receipt-ocr` CLI command instead.
 
     **Example usage with cURL:**
 
