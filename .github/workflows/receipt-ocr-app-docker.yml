@@ -33,7 +33,6 @@ jobs:
           echo "OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}" > .env
           echo "OPENAI_BASE_URL=${{ secrets.OPENAI_BASE_URL }}" >> .env
           echo "OPENAI_MODEL=${{ secrets.OPENAI_MODEL }}" >> .env
-          cat .env
 
       - name: Start services
         working-directory: app
