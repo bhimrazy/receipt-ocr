@@ -31,16 +31,28 @@ jobs:
 
       - name: Test CLI usage
         run: |
-          receipt-ocr images/receipt.jpg
+          output=$(receipt-ocr images/receipt.jpg)
+          echo "$output"
+          # Basic validation: check if output contains expected fields
+          if echo "$output" | grep -q "merchant_name"; then
+            echo "CLI test passed: structured data extracted"
+          else
+            echo "CLI test failed: no structured data found"
+            exit 1
+          fi
 
       - name: Test programmatic usage
         run: |
-          python -c "
+          python3 << 'EOF'
           from receipt_ocr.processors import ReceiptProcessor
           from receipt_ocr.providers import OpenAIProvider
           import os
+          import json
           
-          provider = OpenAIProvider(api_key=os.getenv('OPENAI_API_KEY'), base_url=os.getenv('OPENAI_BASE_URL'))
+          provider = OpenAIProvider(
+              api_key=os.getenv('OPENAI_API_KEY'), 
+              base_url=os.getenv('OPENAI_BASE_URL')
+          )
           processor = ReceiptProcessor(provider)
           
           json_schema = {
@@ -59,5 +71,11 @@ jobs:
           }
           
           result = processor.process_receipt('images/receipt.jpg', json_schema, os.getenv('OPENAI_MODEL'))
-          print('Programmatic test result:', result is not None and isinstance(result, dict))
-          "
+          
+          if result and isinstance(result, dict) and 'merchant_name' in result:
+              print("Programmatic test passed: structured data extracted")
+              print(f"Sample result: {json.dumps(result, indent=2)}...")
+          else:
+              print("Programmatic test failed: invalid or missing structured data")
+              exit(1)
+          EOF
