@@ -56,7 +56,7 @@ curl -X POST "http://localhost:8000/ocr/" \
 # Process with custom schema
 curl -X POST "http://localhost:8000/ocr/" \
   -F "file=@path/to/receipt.jpg" \
-  -F 'schema={"merchant": "string", "total": "number"}'
+  -F 'json_schema={"merchant": "string", "total": "number"}'
 ```
 
 ## API Endpoints
@@ -72,7 +72,7 @@ Extract structured data from a receipt image.
 
 **Parameters:**
 - `file` (required): Receipt image file (JPEG, PNG, etc., max 5MB)
-- `schema` (optional): Custom JSON schema as dictionary
+- `json_schema` (optional): Custom JSON schema as dictionary
 
 **Response:**
 ```json

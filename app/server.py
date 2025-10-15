@@ -1,8 +1,9 @@
-import os
-from typing import Dict, Optional
+import json
+from typing import Optional
 
 from fastapi import FastAPI, HTTPException, UploadFile
 from fastapi.responses import JSONResponse
+
 from receipt_ocr.processors import ReceiptProcessor
 
 # Initialize processor once (not on each request)
@@ -54,12 +55,12 @@ async def health_check():
 @app.post("/ocr/")
 async def ocr_receipt(
     file: UploadFile,
-    output_schema: Optional[Dict] = None,
+    json_schema: Optional[str] = None,
 ):
     """Extract structured data from a receipt image using LLM processing.
 
     - **file**: Receipt image file (JPEG, PNG, etc., max 5MB)
-    - **output_schema**: Optional custom JSON schema as dict
+    - **json_schema**: Optional custom JSON schema as string (will be parsed to dict)
     """
     try:
         # Validation: Check content type
@@ -78,11 +79,16 @@ async def ocr_receipt(
 
         image_bytes = file.file.read()
 
-        # Use provided schema or default
-        json_schema = output_schema if output_schema is not None else DEFAULT_SCHEMA
+        # Parse json_schema if provided
+        schema_to_use = DEFAULT_SCHEMA
+        if json_schema:
+            try:
+                schema_to_use = json.loads(json_schema)
+            except json.JSONDecodeError:
+                raise HTTPException(status_code=400, detail="Invalid JSON schema format")
 
         # Process the receipt using the processor
-        result = processor.process_receipt(image_bytes, json_schema)
+        result = processor.process_receipt(image_bytes, schema_to_use)
         return JSONResponse(content=result, status_code=200)
 
     except HTTPException:
