@@ -41,7 +41,7 @@ class OCRRequest(BaseModel):
 @app.get("/")
 async def root():
     return {
-        "message": "Receipt OCR API - Extract structured data from receipts using LLM",
+        "message": "Receipt OCR API - Extract structured data from receipts",
         "version": "1.0.0",
         "endpoints": {
             "GET /": "API information",
