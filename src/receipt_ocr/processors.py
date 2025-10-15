@@ -17,7 +17,7 @@ class ReceiptProcessor:
         self.parser = parser or ReceiptParser()
 
     def process_receipt(
-        self, image_path: str, json_schema: Dict[str, Any], model: str
+        self, image_path: str, json_schema: Dict[str, Any], model: Optional[str] = None,
     ) -> Dict[str, Any]:
         """Process a receipt image and return a structured JSON object."""
         response = self.provider.get_response(image_path, json_schema, model)
