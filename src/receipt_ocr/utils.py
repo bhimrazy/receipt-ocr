@@ -7,8 +7,7 @@ from PIL import Image
 def encode_image_to_base64(
     image: Union[str, bytes, Image.Image], max_size: int = 1080
 ) -> str:
-    """
-    Encode an image to base64 string.
+    """Encode an image to base64 string.
 
     Args:
         image: Image source (file path, bytes, or PIL Image)

@@ -13,7 +13,9 @@ def test_get_response(mock_openai_client_class, dummy_image_path, mock_chat_comp
 
     provider = OpenAIProvider(api_key="test_api_key", base_url="http://test.com")
 
-    mock_chat_completion.choices[0].message.content = '{"merchant_name": "Test Merchant"}'
+    mock_chat_completion.choices[
+        0
+    ].message.content = '{"merchant_name": "Test Merchant"}'
     mock_openai_instance.chat.completions.create.return_value = mock_chat_completion
 
     dummy_json_schema = {
@@ -38,4 +40,6 @@ def test_get_response_api_error(mock_openai_client_class, dummy_image_path):
     dummy_json_schema = {"type": "object"}
 
     with pytest.raises(Exception, match="API Error"):
-        provider.get_response(dummy_image_path, json_schema=dummy_json_schema, model="gpt-4o")
+        provider.get_response(
+            dummy_image_path, json_schema=dummy_json_schema, model="gpt-4o"
+        )

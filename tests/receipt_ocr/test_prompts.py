@@ -9,8 +9,8 @@ def test_system_prompt_formatting():
         "type": "object",
         "properties": {
             "merchant_name": {"type": "string"},
-            "total_amount": {"type": "number"}
-        }
+            "total_amount": {"type": "number"},
+        },
     }
     json_schema_str = json.dumps(json_schema, indent=2)
 
@@ -26,6 +26,7 @@ def test_system_prompt_formatting_empty_schema():
     """Test SYSTEM_PROMPT formatting with minimal schema."""
     json_schema = {"type": "object"}
     import json
+
     json_schema_str = json.dumps(json_schema, indent=2)
 
     formatted_prompt = SYSTEM_PROMPT.format(json_schema_content=json_schema_str)

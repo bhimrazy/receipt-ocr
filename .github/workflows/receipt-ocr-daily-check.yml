@@ -57,13 +57,13 @@ jobs:
           from receipt_ocr.providers import OpenAIProvider
           import os
           import json
-          
+
           provider = OpenAIProvider(
-              api_key=os.getenv('OPENAI_API_KEY'), 
+              api_key=os.getenv('OPENAI_API_KEY'),
               base_url=os.getenv('OPENAI_BASE_URL')
           )
           processor = ReceiptProcessor(provider)
-          
+
           json_schema = {
               'merchant_name': 'string',
               'merchant_address': 'string',
@@ -78,9 +78,9 @@ jobs:
                   }
               ],
           }
-          
+
           result = processor.process_receipt('images/receipt.jpg', json_schema, os.getenv('OPENAI_MODEL'))
-          
+
           if result and isinstance(result, dict) and 'merchant_name' in result:
               print("Programmatic test passed: structured data extracted")
               print(f"Sample result: {json.dumps(result, indent=2)}...")
