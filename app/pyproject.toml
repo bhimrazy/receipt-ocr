@@ -16,5 +16,5 @@ dependencies = [
   "pillow",
   "python-dotenv",
   "python-multipart",
-  "receipt-ocr>=0.2.1",
+  "receipt-ocr>=0.2.2",
 ]
