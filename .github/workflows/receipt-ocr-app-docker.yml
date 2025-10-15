@@ -65,35 +65,25 @@ jobs:
 
       - name: Test OCR endpoint
         run: |
-          response=$(curl -s -X POST -F "file=@images/receipt.jpg" http://localhost:8000/ocr/)
-          # Check that we get a JSON response
+          echo "Testing OCR endpoint with default schema..."
+          response=$(curl -s -X POST -F "file=@../images/receipt.jpg" http://localhost:8000/ocr/)
           if echo "$response" | jq -e . >/dev/null 2>&1; then
-            echo "OCR endpoint returned valid JSON response"
-            # Check if it looks like a successful response or error
-            if echo "$response" | jq -e '.merchant_name' >/dev/null 2>&1; then
-              echo "Response contains merchant_name (likely successful OCR)"
-            else
-              echo "Response does not contain merchant_name (may be error or different format)"
-            fi
+            echo "✅ Valid JSON response received"
+            echo "Response: $response"
           else
-            echo "OCR endpoint failed to return valid JSON: $response"
+            echo "❌ Invalid JSON response: $response"
             exit 1
           fi
 
       - name: Test OCR endpoint with custom schema
         run: |
-          response=$(curl -s -X POST -F "file=@images/receipt.jpg" -F 'json_schema={"merchant": "string", "total": "number"}' http://localhost:8000/ocr/)
-          # Check that we get a JSON response
+          echo "Testing OCR endpoint with custom schema..."
+          response=$(curl -s -X POST -F "file=@../images/receipt.jpg" -F 'json_schema={"merchant": "string", "total": "number"}' http://localhost:8000/ocr/)
           if echo "$response" | jq -e . >/dev/null 2>&1; then
-            echo "OCR endpoint with custom schema returned valid JSON response"
-            # Check if it looks like a successful response or error
-            if echo "$response" | jq -e '.merchant' >/dev/null 2>&1; then
-              echo "Response contains merchant field from custom schema"
-            else
-              echo "Response does not contain expected custom schema fields"
-            fi
+            echo "✅ Valid JSON response received"
+            echo "Response: $response"
           else
-            echo "OCR endpoint with custom schema failed to return valid JSON: $response"
+            echo "❌ Invalid JSON response: $response"
             exit 1
           fi
 
