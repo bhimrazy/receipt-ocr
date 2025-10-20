@@ -153,6 +153,24 @@ pip install receipt-ocr
     print(result)
     ```
 
+    **Advanced Usage with Response Format Types:**
+
+    For compatibility with different LLM providers, you can specify the response format type:
+
+    ```python
+    result = processor.process_receipt(
+        "path/to/receipt.jpg", 
+        json_schema, 
+        "gpt-4.1", 
+        response_format_type="json_object"  # or "json_schema", "text"
+    )
+    ```
+
+    Supported `response_format_type` values:
+    - `"json_object"` (default) - Standard JSON object format
+    - `"json_schema"` - Structured JSON schema format (for newer OpenAI APIs)
+    - `"text"` - Plain text responses
+
     This will output the same structured JSON as the CLI.
 
 4.  **Run Receipt OCR as a Docker web service:**
