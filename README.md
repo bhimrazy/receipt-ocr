@@ -158,7 +158,6 @@ pip install receipt-ocr
     For compatibility with different LLM providers, you can specify the response format type:
 
     ```python
-    # For plain text responses (if supported by your provider)
     result = processor.process_receipt(
         "path/to/receipt.jpg", 
         json_schema, 
