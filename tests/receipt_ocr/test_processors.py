@@ -40,7 +40,7 @@ def test_process_receipt_success(
 
     # Assert
     mock_provider.get_response.assert_called_once_with(
-        "dummy_path.png", json_schema, "gpt-4o"
+        "dummy_path.png", json_schema, "gpt-4o", None
     )
     mock_parser.parse.assert_called_once_with(
         '{"merchant_name": "Test Merchant", "total": 10.00}'
