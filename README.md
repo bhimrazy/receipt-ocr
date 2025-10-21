@@ -178,8 +178,8 @@ pip install receipt-ocr
 
     Example proper JSON Schema:
 
-    ```json
-    {
+    ```python
+    json_schema = {
       "type": "object",
       "properties": {
         "merchant_name": {"type": "string"},
