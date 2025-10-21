@@ -1,6 +1,6 @@
-# Tesseract OCR Engine
+# Tesseract OCR Module
 
-This folder hosts a script and a Docker-compose setup for performing Optical Character Recognition (OCR) on receipt images.
+This folder hosts a script and a Docker-compose setup for performing **Optical Character Recognition (OCR)** on receipt images.
 
 ![image](https://github.com/bhimrazy/receipt-ocr/assets/46085301/305df68d-50d8-41d4-81d0-9324966fb6c9)
 
@@ -48,9 +48,9 @@ source .venv/bin/activate  # For Windows, use .venv\Scripts\activate
 uv pip install -r src/tesseract_ocr/requirements.txt
 ```
 
-## Usage
+## How to Use
 
-### Running the script locally
+### Running the Script Locally
 
 #### `main.py`
 
@@ -65,7 +65,7 @@ Replace `images/receipt.jpg` with the path to your receipt image.
 > Please ensure that the image is well-lit and that the edges of the receipt are clearly visible and detectable within the image.
 > <img src="https://github.com/bhimrazy/receipt-ocr/assets/46085301/2ea009f0-9e15-42b2-9f15-063a8ec169f1" alt="Receipt Image" width="300" height="400">
 
-### Using API via Docker-compose
+### Running API as a Docker Service
 
 The repository includes a Docker-compose setup for running the OCR engine as a service.
 
