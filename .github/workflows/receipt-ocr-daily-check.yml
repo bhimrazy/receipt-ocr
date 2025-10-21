@@ -6,8 +6,8 @@ on:
   #     - "src/receipt_ocr/**"
   # pull_request:
   #   branches: [main]
-  #   paths:
-  #     - "src/receipt_ocr/**"
+  # paths:
+  #   - "src/receipt_ocr/**"
   schedule:
     - cron: "0 0 * * *" # Runs every day at midnight UTC
   workflow_dispatch:
@@ -51,42 +51,7 @@ jobs:
 
       - name: Test programmatic usage
         run: |
-          python3 << 'EOF'
-          from receipt_ocr.processors import ReceiptProcessor
-          from receipt_ocr.providers import OpenAIProvider
-          import os
-          import json
-
-          provider = OpenAIProvider(
-              api_key=os.getenv('OPENAI_API_KEY'),
-              base_url=os.getenv('OPENAI_BASE_URL')
-          )
-          processor = ReceiptProcessor(provider)
-
-          json_schema = {
-              'merchant_name': 'string',
-              'merchant_address': 'string',
-              'transaction_date': 'string',
-              'transaction_time': 'string',
-              'total_amount': 'number',
-              'line_items': [
-                  {
-                      'item_name': 'string',
-                      'item_quantity': 'number',
-                      'item_price': 'number',
-                  }
-              ],
-          }
-
-          result = processor.process_receipt('images/receipt.jpg', json_schema, os.getenv('OPENAI_MODEL'))
-
-          if result and isinstance(result, dict) and 'merchant_name' in result:
-              print("Programmatic test passed: structured data extracted")
-              print(f"Sample result: {json.dumps(result, indent=2)}...")
-          else:
-              print("Programmatic test failed: invalid or missing structured data")
-              exit(1)
-          EOF
+          python tests/parity_receipt_ocr/test_response_formats.py
 
       - name: Minimize uv cache
         run: uv cache prune --ci
