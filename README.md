@@ -334,7 +334,7 @@ This module provides direct OCR capabilities using Tesseract. For more detailed 
 
 - **Docker Issues:** Ensure Docker is running and ports 8000 are available.
 
-For more help, check the [GitHub Issues](https://github.com/bhimrazy/receipt-ocr/issues) or create a new issue.
+For more help, start a [GitHub Discussion](https://github.com/bhimrazy/receipt-ocr/discussions) to ask questions, or create a [new issue](https://github.com/bhimrazy/receipt-ocr/issues) if you found a bug.
 
 ## Contributing
 
