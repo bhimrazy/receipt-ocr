@@ -1,6 +1,6 @@
 # Receipt OCR API
 
-A FastAPI service that extracts structured data from receipt images using Large Language Models (LLMs).
+A **FastAPI** service that extracts structured data from receipt images using **Large Language Models (LLMs)**.
 
 ## Features
 
@@ -10,7 +10,7 @@ A FastAPI service that extracts structured data from receipt images using Large 
 - **File validation**: Validates image files and sizes (max 5MB)
 - **RESTful API**: Clean FastAPI endpoints with automatic documentation
 
-## Quick Start
+## Get Started Quickly
 
 ### 1. Install Dependencies
 

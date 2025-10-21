@@ -4,9 +4,9 @@
 [![Code Coverage](https://codecov.io/gh/bhimrazy/receipt-ocr/branch/main/graph/badge.svg)](https://codecov.io/gh/bhimrazy/receipt-ocr)
 [![License](https://img.shields.io/github/license/bhimrazy/receipt-ocr)](https://github.com/bhimrazy/receipt-ocr/blob/main/LICENSE)
 
-An efficient OCR engine for receipt image processing.
+An efficient **OCR** engine for receipt image processing.
 
-This repository provides a comprehensive solution for Optical Character Recognition (OCR) on receipt images, featuring both a dedicated Tesseract OCR module and a general receipt processing package using LLMs.
+This repository provides a comprehensive solution for **Optical Character Recognition (OCR)** on receipt images, featuring both a dedicated Tesseract OCR module and a general receipt processing package using LLMs.
 
 ![image](https://github.com/bhimrazy/receipt-ocr/assets/46085301/305df68d-50d8-41d4-81d0-9324966fb6c9)
 
@@ -15,10 +15,47 @@ This repository provides a comprehensive solution for Optical Character Recognit
 <a href="https://star-history.com/#bhimrazy/receipt-ocr&Date">
  <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=bhimrazy/receipt-ocr&type=Date&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=bhimrazy/receipt-ocr&type=Date" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=bhimrazy/receipt-ocr&type=Date&theme=dark" />
    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=bhimrazy/receipt-ocr&type=Date" />
  </picture>
 </a>
+
+## Table of Contents
+
+- [Receipt OCR Engine](#receipt-ocr-engine)
+  - [Star History](#star-history)
+  - [Table of Contents](#table-of-contents)
+  - [Quick Start](#quick-start)
+  - [Project Structure](#project-structure)
+  - [Prerequisites](#prerequisites)
+  - [How to Use Receipt OCR](#how-to-use-receipt-ocr)
+    - [Receipt OCR Module (Structured Data Extraction)](#receipt-ocr-module-structured-data-extraction)
+    - [Tesseract OCR Module (Raw Text Extraction)](#tesseract-ocr-module-raw-text-extraction)
+  - [Troubleshooting](#troubleshooting)
+  - [Contributing](#contributing)
+  - [LinkedIn Post](#linkedin-post)
+  - [License](#license)
+
+## Quick Start
+
+**Extract structured data from a receipt in 3 steps:**
+
+1. **Install the package:**
+   ```bash
+   pip install receipt-ocr
+   ```
+
+2. **Set up your API key:**
+   ```bash
+   export OPENAI_API_KEY="your_openai_api_key_here"
+   ```
+
+3. **Process a receipt:**
+   ```bash
+   receipt-ocr images/receipt.jpg
+   ```
+
+For Docker or advanced usage, see [Usage Examples](#usage-examples) below.
 
 ## Project Structure
 
@@ -33,9 +70,9 @@ The project is organized into two main modules:
 - Docker & Docker-compose(for running as a service)
 - Tesseract OCR (for local Tesseract CLI usage) - [Installation Guide](https://tesseract-ocr.github.io/tessdoc/Installation.html)
 
-## Usage Examples
+## How to Use Receipt OCR
 
-### Receipt OCR Module
+### Receipt OCR Module (Structured Data Extraction)
 
 This module provides a higher-level abstraction for processing receipts, leveraging LLMs for parsing and extraction.
 
@@ -48,34 +85,30 @@ pip install receipt-ocr
 1.  **Configure Environment Variables:**
     Create a `.env` file in the project root or set environment variables directly. This module supports multiple LLM providers.
 
-    Example `.env` for OpenAI:
+    **Supported Providers:**
 
-    > Get it from here: http://platform.openai.com/api-keys
+    - **OpenAI:**
+      > Get API key from: https://platform.openai.com/api-keys
+      ```
+      OPENAI_API_KEY="your_openai_api_key_here"
+      OPENAI_MODEL="gpt-4o"
+      ```
 
-    ```
-    OPENAI_API_KEY="your_openai_api_key_here"
-    OPENAI_MODEL="gpt-4.1"
-    ```
+    - **Gemini (Google):**
+      > Get API key from: https://aistudio.google.com/app/apikey
+      ```
+      OPENAI_API_KEY="your_gemini_api_key_here"
+      OPENAI_BASE_URL="https://generativelanguage.googleapis.com/v1beta/openai/"
+      OPENAI_MODEL="gemini-2.5-pro"
+      ```
 
-    Example `.env` for Gemini:
-
-    > Get it from here: https://aistudio.google.com/app/apikey
-
-    ```
-    OPENAI_API_KEY="your_gemini_api_key_here"
-    OPENAI_BASE_URL="https://generativelanguage.googleapis.com/v1beta/openai/"
-    OPENAI_MODEL="gemini-2.5-pro"
-    ```
-
-    Example `.env` for Groq:
-
-    > Get it from here: https://console.groq.com/keys
-
-    ```
-    OPENAI_API_KEY="your_groq_api_key_here"
-    OPENAI_BASE_URL="https://api.groq.com/openai/v1/models"
-    OPENAI_MODEL="llama3-8b-8192"
-    ```
+    - **Groq:**
+      > Get API key from: https://console.groq.com/keys
+      ```
+      OPENAI_API_KEY="your_groq_api_key_here"
+      OPENAI_BASE_URL="https://api.groq.com/openai/v1"
+      OPENAI_MODEL="llama3-8b-8192"
+      ```
 
 2.  **Process a receipt using the `receipt-ocr` CLI:**
 
@@ -248,7 +281,7 @@ pip install receipt-ocr
 
     For detailed API documentation, visit `http://localhost:8000/docs` when the service is running.
 
-### Tesseract OCR Module
+### Tesseract OCR Module (Raw Text Extraction)
 
 This module provides direct OCR capabilities using Tesseract. For more detailed local setup and usage, refer to [`src/tesseract_ocr/README.md`](src/tesseract_ocr/README.md).
 
@@ -286,6 +319,22 @@ This module provides direct OCR capabilities using Tesseract. For more detailed 
       -H 'Content-Type: multipart/form-data' \
       -F 'file=@images/paper-cash-sell-receipt-vector-23876532.jpg;type=image/jpeg'
     ```
+
+## Troubleshooting
+
+**Common Issues and Solutions:**
+
+- **API Key Errors:** Ensure your `OPENAI_API_KEY` is set correctly and has sufficient credits. Check the provider's dashboard for key status.
+
+- **Model Not Found:** Verify the `OPENAI_MODEL` matches available models for your provider. For OpenAI, check https://platform.openai.com/docs/models.
+
+- **Poor OCR Results:** Use high-quality, well-lit images. Ensure receipt text is clear and not skewed.
+
+- **Installation Issues:** If `pip install receipt-ocr` fails, try `pip install --upgrade pip` first.
+
+- **Docker Issues:** Ensure Docker is running and ports 8000 are available.
+
+For more help, check the [GitHub Issues](https://github.com/bhimrazy/receipt-ocr/issues) or create a new issue.
 
 ## Contributing
 
