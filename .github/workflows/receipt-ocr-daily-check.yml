@@ -4,10 +4,10 @@ on:
   #   branches: [main]
   #   paths:
   #     - "src/receipt_ocr/**"
-  # pull_request:
-  #   branches: [main]
-  #   paths:
-  #     - "src/receipt_ocr/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/receipt_ocr/**"
   schedule:
     - cron: "0 0 * * *" # Runs every day at midnight UTC
   workflow_dispatch:
@@ -63,6 +63,7 @@ jobs:
           )
           processor = ReceiptProcessor(provider)
 
+          # Casual schema for json_object and text formats
           json_schema = {
               'merchant_name': 'string',
               'merchant_address': 'string',
@@ -78,13 +79,59 @@ jobs:
               ],
           }
 
-          result = processor.process_receipt('images/receipt.jpg', json_schema, os.getenv('OPENAI_MODEL'))
+          # Proper JSON Schema for json_schema format
+          json_schema_openai = {
+              "type": "object",
+              "properties": {
+                  "merchant_name": {"type": "string"},
+                  "merchant_address": {"type": "string"},
+                  "transaction_date": {"type": "string"},
+                  "transaction_time": {"type": "string"},
+                  "total_amount": {"type": "number"},
+                  "line_items": {
+                      "type": "array",
+                      "items": {
+                          "type": "object",
+                          "properties": {
+                              "item_name": {"type": "string"},
+                              "item_quantity": {"type": "number"},
+                              "item_price": {"type": "number"}
+                          },
+                          "required": ["item_name", "item_quantity", "item_price"],
+                          "additionalProperties": False
+                      }
+                  }
+              },
+              "required": [
+                  "merchant_name",
+                  "merchant_address",
+                  "transaction_date",
+                  "transaction_time",
+                  "total_amount",
+                  "line_items"
+              ],
+              "additionalProperties": False
+          }
 
-          if result and isinstance(result, dict) and 'merchant_name' in result:
-              print("Programmatic test passed: structured data extracted")
-              print(f"Sample result: {json.dumps(result, indent=2)}...")
+          # Test all response format types
+          results = {}
+          results['json_object'] = processor.process_receipt('images/receipt.jpg', json_schema, os.getenv('OPENAI_MODEL'), response_format_type="json_object")
+          results['json_schema'] = processor.process_receipt('images/receipt.jpg', json_schema_openai, os.getenv('OPENAI_MODEL'), response_format_type="json_schema")
+          results['text'] = processor.process_receipt('images/receipt.jpg', json_schema, os.getenv('OPENAI_MODEL'), response_format_type="text")
+
+          # Validate all results
+          all_passed = True
+          for format_type, result in results.items():
+              if result and isinstance(result, dict) and 'merchant_name' in result:
+                  print(f"{format_type.upper()} test passed: structured data extracted")
+              else:
+                  print(f"{format_type.upper()} test failed: invalid or missing structured data")
+                  all_passed = False
+
+          if all_passed:
+              print("All programmatic tests passed")
           else:
-              print("Programmatic test failed: invalid or missing structured data")
+              print("Some programmatic tests failed")
               exit(1)
           EOF
 
