@@ -124,8 +124,10 @@ jobs:
           for format_type, result in results.items():
               if result and isinstance(result, dict) and 'merchant_name' in result:
                   print(f"{format_type.upper()} test passed: structured data extracted")
+                  print(f"Sample output: {json.dumps(result, indent=2)}...")
               else:
                   print(f"{format_type.upper()} test failed: invalid or missing structured data")
+                  print(f"Result: {result}")
                   all_passed = False
 
           if all_passed:
