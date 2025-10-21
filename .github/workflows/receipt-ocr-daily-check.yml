@@ -4,8 +4,8 @@ on:
   #   branches: [main]
   #   paths:
   #     - "src/receipt_ocr/**"
-  pull_request:
-    branches: [main]
+  # pull_request:
+  #   branches: [main]
     # paths:
     #   - "src/receipt_ocr/**"
   schedule:
