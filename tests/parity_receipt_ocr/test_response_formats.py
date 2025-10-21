@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""
-Integration test script for testing different response format types.
-This script tests the receipt OCR processor with various response formats.
-Run this script when you have the necessary API credentials set.
+"""Integration test script for testing different response format types.
+
+This script tests the receipt OCR processor with various response
+formats. Run this script when you have the necessary API credentials
+set.
 """
 
 import os
