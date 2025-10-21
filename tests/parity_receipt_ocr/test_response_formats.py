@@ -21,8 +21,8 @@ def main():
 
     processor = ReceiptProcessor()
 
-    # Casual schema for json_object and text formats
-    json_schema_casual = {
+    # Simple schema for json_object and text formats
+    simple_json_schema = {
         "merchant_name": "string",
         "merchant_address": "string",
         "transaction_date": "string",
@@ -37,8 +37,8 @@ def main():
         ],
     }
 
-    # Proper JSON Schema for json_schema format
-    json_schema_proper = {
+    # Proper JSON Schema for OpenAI json_schema format
+    openai_json_schema = {
         "type": "object",
         "properties": {
             "merchant_name": {"type": "string"},
@@ -75,16 +75,16 @@ def main():
     results = {}
     results["json_object"] = processor.process_receipt(
         "images/receipt.jpg",
-        json_schema_casual,
+        simple_json_schema,
         response_format_type="json_object",
     )
     results["json_schema"] = processor.process_receipt(
         "images/receipt.jpg",
-        json_schema_proper,
+        openai_json_schema,
         response_format_type="json_schema",
     )
     results["text"] = processor.process_receipt(
-        "images/receipt.jpg", json_schema_casual, response_format_type="text"
+        "images/receipt.jpg", simple_json_schema, response_format_type="text"
     )
 
     # Validate all results

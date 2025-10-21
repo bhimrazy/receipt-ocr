@@ -174,7 +174,7 @@ pip install receipt-ocr
     <details>
     <summary>Using <code>json_schema</code> format</summary>
 
-    When using `response_format_type="json_schema"`, you must provide a proper JSON Schema object (not the casual dictionary format). The library handles the OpenAI API boilerplate, so you just need to pass the schema definition.
+    When using `response_format_type="json_schema"`, you must provide a proper JSON Schema object (not the simple dictionary format). The library handles the OpenAI API boilerplate, so you just need to pass the schema definition.
 
     Example proper JSON Schema:
 
