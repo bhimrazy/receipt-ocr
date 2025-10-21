@@ -171,6 +171,52 @@ pip install receipt-ocr
     - `"json_schema"` - Structured JSON schema format (for newer OpenAI APIs)
     - `"text"` - Plain text responses
 
+    <details>
+    <summary>Using `json_schema` format</summary>
+
+    When using `response_format_type="json_schema"`, you must provide a proper JSON Schema object (not the casual dictionary format). The library handles the OpenAI API boilerplate, so you just need to pass the schema definition.
+
+    Example proper JSON Schema:
+
+    ```json
+    {
+      "type": "object",
+      "properties": {
+        "merchant_name": {"type": "string"},
+        "merchant_address": {"type": "string"},
+        "transaction_date": {"type": "string"},
+        "transaction_time": {"type": "string"},
+        "total_amount": {"type": "number"},
+        "line_items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "item_name": {"type": "string"},
+              "item_quantity": {"type": "number"},
+              "item_price": {"type": "number"}
+            },
+            "required": ["item_name", "item_quantity", "item_price"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "merchant_name",
+        "merchant_address",
+        "transaction_date",
+        "transaction_time",
+        "total_amount",
+        "line_items"
+      ],
+      "additionalProperties": false
+    }
+    ```
+
+    See the [OpenAI structured outputs documentation](https://platform.openai.com/docs/guides/structured-outputs) for more information.
+
+    </details>
+
     This will output the same structured JSON as the CLI.
 
 4.  **Run Receipt OCR as a Docker web service:**
