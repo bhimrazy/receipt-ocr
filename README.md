@@ -264,14 +264,20 @@ We welcome contributions to the Receipt OCR Engine! To contribute, please follow
 
     # Install development and test dependencies
     uv sync --all-extras --dev
-    uv pip install -r src/tesseract_ocr/requirements.txt
     uv pip install -e.
+    
+    # Optional: Install requirements for the tesseract_ocr module
+    uv pip install -r src/tesseract_ocr/requirements.txt
     ```
 
 4.  **Make your changes** and ensure they adhere to the project's coding style.
 5.  **Run tests** to ensure your changes haven't introduced any regressions:
     ```bash
-    uv run pytest
+    # Run tests for the receipt_ocr module
+    uv run pytest tests/receipt_ocr
+    
+    # Run tests for the tesseract_ocr module  
+    uv run pytest tests/tesseract_ocr
     ```
 6.  **Run linting and formatting checks**:
     ```bash
