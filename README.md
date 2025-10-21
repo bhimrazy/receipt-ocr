@@ -172,7 +172,7 @@ pip install receipt-ocr
     - `"text"` - Plain text responses
 
     <details>
-    <summary>Using `json_schema` format</summary>
+    <summary>Using <code>json_schema</code> format</summary>
 
     When using `response_format_type="json_schema"`, you must provide a proper JSON Schema object (not the casual dictionary format). The library handles the OpenAI API boilerplate, so you just need to pass the schema definition.
 
@@ -216,8 +216,6 @@ pip install receipt-ocr
     See the [OpenAI structured outputs documentation](https://platform.openai.com/docs/guides/structured-outputs) for more information.
 
     </details>
-
-    This will output the same structured JSON as the CLI.
 
 4.  **Run Receipt OCR as a Docker web service:**
 
