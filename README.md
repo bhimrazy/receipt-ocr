@@ -12,7 +12,7 @@ This repository provides a comprehensive solution for **Optical Character Recogn
 
 ## Star History
 
-<a href="https://star-history.com/#bhimrazy/receipt-ocr&Date">
+<a href="https://star-history.com/#bhimrazy/receipt-ocr&type=Date">
  <picture>
    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=bhimrazy/receipt-ocr&type=Date&theme=dark" />
    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=bhimrazy/receipt-ocr&type=Date&theme=dark" />
@@ -55,7 +55,7 @@ This repository provides a comprehensive solution for **Optical Character Recogn
    receipt-ocr images/receipt.jpg
    ```
 
-For Docker or advanced usage, see [Usage Examples](#usage-examples) below.
+For Docker or advanced usage, see [How to Use Receipt OCR](#how-to-use-receipt-ocr) below.
 
 ## Project Structure
 
