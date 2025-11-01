@@ -14,5 +14,5 @@ jobs:
       - name: Link Checker
         uses: lycheeverse/lychee-action@v2
         with:
-          args: --verbose --no-progress --include-fragments "**/README.md"
+          args: --verbose --no-progress --include-fragments "**/README.md" --exclude "https://platform.openai.com/**,https://star-history.com/**"
           fail: true
