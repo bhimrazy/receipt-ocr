@@ -55,8 +55,6 @@ repos:
       - id: mdformat
         additional_dependencies:
           - mdformat-gfm
-          #- mdformat-black
-          - mdformat_frontmatter
         args: ["--number"]
         exclude: README.md
 
