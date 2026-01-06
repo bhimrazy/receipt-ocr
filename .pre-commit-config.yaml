@@ -41,7 +41,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.14.0
+    rev: v0.14.10
     hooks:
       # Run the linter.
       - id: ruff-check
@@ -50,18 +50,16 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/executablebooks/mdformat
-    rev: 0.7.22
+    rev: 1.0.0
     hooks:
       - id: mdformat
         additional_dependencies:
           - mdformat-gfm
-          #- mdformat-black
-          - mdformat_frontmatter
         args: ["--number"]
         exclude: README.md
 
   - repo: https://github.com/pre-commit/mirrors-prettier
-    rev: v3.1.0
+    rev: v4.0.0-alpha.8
     hooks:
       - id: prettier
         files: \.(json|yml|yaml|toml)
@@ -69,7 +67,7 @@ repos:
         args: ["--print-width=120"]
 
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: v2.6.0
+    rev: v2.11.1
     hooks:
       - id: pyproject-fmt
         additional_dependencies: [tox]
