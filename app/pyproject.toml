@@ -13,9 +13,9 @@ classifiers = [
   "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
-  "fastapi[standard]",
-  "pillow",
-  "python-dotenv",
-  "python-multipart",
+  "fastapi[standard]==0.128",
+  "pillow==12.1",
+  "python-dotenv==1.2.1",
+  "python-multipart==0.0.22",
   "receipt-ocr>=0.2.2",
 ]
