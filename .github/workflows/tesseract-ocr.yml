@@ -53,7 +53,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           choco install tesseract --yes
-          tesseract --version
+          & "C:\Program Files\Tesseract-OCR\tesseract.exe" --version
 
       - name: Install dependencies
         run: |
@@ -82,3 +82,13 @@ jobs:
 
       - name: Minimize uv cache
         run: uv cache prune --ci
+
+  testing-guardian:
+    runs-on: ubuntu-24.04
+    needs: test
+    if: always()
+    steps:
+      - run: echo "Test result: ${{ needs.test.result }}"
+      - name: Fail if tests failed
+        if: needs.test.result != 'success'
+        run: exit 1
