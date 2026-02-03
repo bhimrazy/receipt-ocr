@@ -47,13 +47,13 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install tesseract
-          export PATH="$PATH;C:\\Program Files\\Tesseract-OCR"
           tesseract --version
 
       - name: Install Tesseract OCR (Windows)
         if: runner.os == 'Windows'
         run: |
           choco install tesseract --yes
+          export PATH="$PATH;C:\\Program Files\\Tesseract-OCR"
           tesseract --help
 
       - name: Install dependencies
