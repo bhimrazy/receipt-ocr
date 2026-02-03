@@ -51,11 +51,11 @@ jobs:
 
       - name: Install Tesseract OCR (Windows)
         if: runner.os == 'Windows'
-        shell: pwsh
         run: |
           choco install tesseract --yes
-          echo "C:\Program Files\Tesseract-OCR" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          tesseract --version
+          $env:Path += ";C:\Program Files\Tesseract-OCR"
+          echo "C:\Program Files\Tesseract-OCR" >> $env:GITHUB_PATH
+          tesseract --help
 
       - name: Install dependencies
         run: |
