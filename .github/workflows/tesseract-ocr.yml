@@ -53,7 +53,8 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           choco install tesseract --yes
-          "C:\Program Files\Tesseract-OCR\tesseract.exe" --version
+          $env:PATH += ";C:\Program Files\Tesseract-OCR"
+          tesseract --help
 
       - name: Install dependencies
         run: |
