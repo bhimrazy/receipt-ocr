@@ -53,7 +53,6 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           choco install tesseract --yes
-          $env:PATH += ";C:\Program Files\Tesseract-OCR"
           tesseract --help
 
       - name: Install dependencies
@@ -63,7 +62,12 @@ jobs:
           uv pip list
 
       - name: Run tests
-        run: uv run pytest --cov=src/tesseract_ocr tests/tesseract_ocr
+        shell: bash
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            export PATH="$PATH;C:\\Program Files\\Tesseract-OCR"
+          fi
+          uv run pytest --cov=src/tesseract_ocr tests/tesseract_ocr
 
       - name: Statistics
         run: |
