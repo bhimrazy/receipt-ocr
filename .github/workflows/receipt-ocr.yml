@@ -13,15 +13,17 @@ on:
 
 jobs:
   ruff:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v6
       - uses: astral-sh/ruff-action@v3
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
+        os: [ubuntu-24.04, windows-2025, macos-26]
         python-version: ["3.10", "3.11", "3.12", "3.13"]
     steps:
       - name: Checkout code
