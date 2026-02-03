@@ -1,15 +1,15 @@
 [build-system]
 build-backend = "hatchling.build"
 
-requires = [ "hatchling" ]
+requires = ["hatchling"]
 
 [project]
 name = "receipt-ocr"
 description = "A package for extracting structured data from receipts."
 readme = "README.md"
-keywords = [ "llm", "ocr", "receipts", "tesseract" ]
+keywords = ["llm", "ocr", "receipts", "tesseract"]
 license = { file = "LICENSE" }
-authors = [ { name = "Bhimraj Yadav", email = "bhimrajyadav977@gmail.com" } ]
+authors = [{ name = "Bhimraj Yadav", email = "bhimrajyadav977@gmail.com" }]
 requires-python = ">=3.10"
 classifiers = [
   "Development Status :: 4 - Beta",
@@ -28,8 +28,8 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Information Analysis",
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-dynamic = [ "version" ]
-dependencies = [ "openai", "pillow", "python-dotenv" ]
+dynamic = ["version"]
+dependencies = ["openai==2.16.0", "pillow==12.1.0", "python-dotenv==1.2.1"]
 
 urls."Bug Tracker" = "https://github.com/bhimrazy/receipt-ocr/issues"
 urls.Documentation = "https://github.com/bhimrazy/receipt-ocr"
@@ -39,17 +39,17 @@ urls."Source Code" = "https://github.com/bhimrazy/receipt-ocr"
 scripts.receipt-ocr = "receipt_ocr.cli:main"
 
 [dependency-groups]
-dev = [ "codecov", "coverage", "pillow", "pytest", "pytest-cov" ]
+dev = ["codecov", "coverage", "pillow", "pytest", "pytest-cov"]
 
 [tool.hatch.version]
 path = "src/receipt_ocr/__about__.py"
 pattern = "__version__ = \"(?P<version>.+)\""
 
 [tool.hatch.build.targets.wheel]
-packages = [ "src/receipt_ocr" ]
+packages = ["src/receipt_ocr"]
 
 [tool.hatch.metadata]
 allow-direct-references = true
 
 [tool.pytest.ini_options]
-pythonpath = [ "src" ]
+pythonpath = ["src"]
