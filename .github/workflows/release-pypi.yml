@@ -29,6 +29,15 @@ jobs:
       - name: Build package
         run: uv build --no-sources
 
+      - name: Verify package artifacts with twine
+        run: uvx twine check --strict dist/*
+
+      - name: Smoke test (wheel)
+        run: uv run --isolated --no-project --with dist/*.whl tests/smoke_test.py
+
+      - name: Smoke test (source distribution)
+        run: uv run --isolated --no-project --with dist/*.tar.gz tests/smoke_test.py
+
       - name: Publish package
         if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
         env:
