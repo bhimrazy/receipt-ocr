@@ -33,10 +33,10 @@ jobs:
         run: uvx twine check --strict dist/*
 
       - name: Smoke test (wheel)
-        run: uv run --isolated --no-project --with dist/*.whl -c "import receipt_ocr; print(f'✓ receipt-ocr {receipt_ocr.__version__} wheel OK')"
+        run: uv run --isolated --no-project --with dist/*.whl tests/smoke_test.py
 
       - name: Smoke test (source distribution)
-        run: uv run --isolated --no-project --with dist/*.tar.gz -c "import receipt_ocr; print(f'✓ receipt-ocr {receipt_ocr.__version__} sdist OK')"
+        run: uv run --isolated --no-project --with dist/*.tar.gz tests/smoke_test.py
 
       - name: Publish package
         if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
