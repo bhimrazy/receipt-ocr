@@ -1,0 +1,54 @@
+name: Test PyPI Release
+
+# https://help.github.com/en/actions/reference/events-that-trigger-workflows
+on: # Trigger the workflow on push or pull request, but only for the main branch
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/release-test-pypi.yml"
+  release:
+    types: [published]
+  workflow_dispatch:   # 👈 manual trigger added
+
+# based on https://github.com/pypa/gh-action-pypi-publish
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install -U -q build twine
+          pip list
+
+      - name: Build package
+        run: python -m build
+
+      - name: Check package
+        run: twine check dist/* --strict
+
+      # ✅ Enable Test PyPI publish for testing
+      - name: Publish to Test PyPI 🧪
+        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+        uses: pypa/gh-action-pypi-publish@v1.13.0
+        with:
+          user: __token__
+          password: ${{ secrets.test_pypi_password }}
+          repository-url: https://test.pypi.org/legacy/
+
+      # ❌ Removed real PyPI publish step
+      # - name: Publish distribution 📦 to PyPI
+      #   if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
+      #   uses: pypa/gh-action-pypi-publish@v1.13.0
+      #   with:
+      #     user: __token__
+      #     password: ${{ secrets.pypi_password }}
