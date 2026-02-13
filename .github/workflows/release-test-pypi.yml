@@ -10,7 +10,7 @@ on: # Trigger the workflow on push or pull request, but only for the main branch
       - ".github/workflows/release-test-pypi.yml"
   release:
     types: [published]
-  workflow_dispatch:   # 👈 manual trigger added
+  workflow_dispatch: # 👈 manual trigger added
 
 # based on https://github.com/pypa/gh-action-pypi-publish
 
