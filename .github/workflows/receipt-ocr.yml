@@ -50,7 +50,7 @@ jobs:
           uv run coverage xml -o coverage-receipt-ocr.xml
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage-receipt-ocr.xml
