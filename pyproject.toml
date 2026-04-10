@@ -28,7 +28,7 @@ classifiers = [
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 dynamic = [ "version" ]
-dependencies = [ "openai==2.30", "pillow==12.1.1", "python-dotenv==1.2.2" ]
+dependencies = [ "openai==2.30", "pillow==12.2", "python-dotenv==1.2.2" ]
 urls."Bug Tracker" = "https://github.com/bhimrazy/receipt-ocr/issues"
 urls."Source Code" = "https://github.com/bhimrazy/receipt-ocr"
 urls.Documentation = "https://github.com/bhimrazy/receipt-ocr"
