@@ -43,14 +43,14 @@ jobs:
       # ✅ Enable Test PyPI publish for testing
       - name: Publish to Test PyPI 🧪
         if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
-        uses: pypa/gh-action-pypi-publish@v1.13.0
+        uses: pypa/gh-action-pypi-publish@v1.14.0
         with:
           repository-url: https://test.pypi.org/legacy/
 
       # ❌ Removed real PyPI publish step
       # - name: Publish distribution 📦 to PyPI
       #   if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
-      #   uses: pypa/gh-action-pypi-publish@v1.13.0
+      #   uses: pypa/gh-action-pypi-publish@v1.14.0
       #   with:
       #     user: __token__
       #     password: ${{ secrets.pypi_password }}
