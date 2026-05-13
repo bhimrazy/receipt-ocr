@@ -7,11 +7,11 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 COPY . /app
 
 # Install the application dependencies.
-WORKDIR /app
+WORKDIR /app/app
 RUN uv sync --frozen --no-cache
 
 # Set the PATH to include the virtual environment binaries.
-ENV PATH="/app/.venv/bin:$PATH"
+ENV PATH="/app/app/.venv/bin:$PATH"
 
 # Run the application.
 CMD ["fastapi", "run", "server.py", "--port", "8000", "--host", "0.0.0.0"]

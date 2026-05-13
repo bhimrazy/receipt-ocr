@@ -32,10 +32,6 @@ coverage.xml
 .env.local
 .env.*.local
 
-# Documentation
-README.md
-LICENSE
-
 # Docker files (not needed in image)
 Dockerfile
 docker-compose.yml
