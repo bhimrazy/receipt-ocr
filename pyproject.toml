@@ -40,10 +40,10 @@ scripts.receipt-ocr = "receipt_ocr.cli:main"
 dev = [ "codecov", "coverage", "pillow", "pytest", "pytest-cov" ]
 
 [tool.hatch]
-build.targets.wheel.packages = [ "src/receipt_ocr" ]
-metadata.allow-direct-references = true
 version.path = "src/receipt_ocr/__about__.py"
 version.pattern = '__version__ = "(?P<version>.+)"'
+metadata.allow-direct-references = true
+build.targets.wheel.packages = [ "src/receipt_ocr" ]
 
 [tool.pytest]
 ini_options.pythonpath = [ "src" ]
