@@ -192,10 +192,10 @@ pip install receipt-ocr
 
     ```python
     result = processor.process_receipt(
-        "path/to/receipt.jpg", 
-        json_schema, 
-        "gpt-4.1", 
-        response_format_type="json_object"  # or "json_schema", "text"
+        "path/to/receipt.jpg",
+        json_schema,
+        "gpt-4.1",
+        response_format_type="json_object",  # or "json_schema", "text"
     )
     ```
 
@@ -213,36 +213,36 @@ pip install receipt-ocr
 
     ```python
     json_schema = {
-      "type": "object",
-      "properties": {
-        "merchant_name": {"type": "string"},
-        "merchant_address": {"type": "string"},
-        "transaction_date": {"type": "string"},
-        "transaction_time": {"type": "string"},
-        "total_amount": {"type": "number"},
-        "line_items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "item_name": {"type": "string"},
-              "item_quantity": {"type": "number"},
-              "item_price": {"type": "number"}
+        "type": "object",
+        "properties": {
+            "merchant_name": {"type": "string"},
+            "merchant_address": {"type": "string"},
+            "transaction_date": {"type": "string"},
+            "transaction_time": {"type": "string"},
+            "total_amount": {"type": "number"},
+            "line_items": {
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "item_name": {"type": "string"},
+                        "item_quantity": {"type": "number"},
+                        "item_price": {"type": "number"},
+                    },
+                    "required": ["item_name", "item_quantity", "item_price"],
+                    "additionalProperties": false,
+                },
             },
-            "required": ["item_name", "item_quantity", "item_price"],
-            "additionalProperties": false
-          }
-        }
-      },
-      "required": [
-        "merchant_name",
-        "merchant_address",
-        "transaction_date",
-        "transaction_time",
-        "total_amount",
-        "line_items"
-      ],
-      "additionalProperties": false
+        },
+        "required": [
+            "merchant_name",
+            "merchant_address",
+            "transaction_date",
+            "transaction_time",
+            "total_amount",
+            "line_items",
+        ],
+        "additionalProperties": false,
     }
     ```
 
