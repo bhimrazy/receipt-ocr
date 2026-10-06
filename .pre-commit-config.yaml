@@ -38,6 +38,8 @@ repos:
       - id: docformatter
         additional_dependencies: [tomli]
         args: ["--in-place"]
+        # v1.7.8 mangles triple-quoted strings in pytest.mark.parametrize
+        exclude: ^tests/
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.

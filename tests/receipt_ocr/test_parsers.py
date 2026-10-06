@@ -5,22 +5,27 @@ from receipt_ocr import ReceiptParser
 @pytest.fixture
 def parser():
     return ReceiptParser()
- pytest.mark.parametrize(
+
+
+@pytest.mark.parametrize(
     "response",
     [
-        """```json { "merchant_name": "Test Merchant", "total_amount": 10.00 }
-        ```"""
-      ,
+        """```json
+{
+    "merchant_name": "Test Merchant",
+    "total_amount": 10.00
+}
+```""",
         """```
 {
     "merchant_name": "Test Merchant",
     "total_amount": 10.00
 }
 ```""",
-        """{ "merchant_name": "Test Merchant", "total_amount": 10.00 }"""
-
-
-    ,
+        """{
+    "merchant_name": "Test Merchant",
+    "total_amount": 10.00
+}""",
     ],
 )
 def test_parse_valid_json(parser, response):
