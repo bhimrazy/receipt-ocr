@@ -10,47 +10,64 @@ on: # Trigger the workflow on push or pull request, but only for the main branch
       - ".github/workflows/release-test-pypi.yml"
   release:
     types: [published]
-  workflow_dispatch: # 👈 manual trigger added
+  workflow_dispatch:
 
-# based on https://github.com/pypa/gh-action-pypi-publish
+# https://docs.pypi.org/trusted-publishers/
+permissions:
+  contents: read
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
-    # Specifying a GitHub environment is optional, but strongly encouraged
-    # environment: pypi
-    permissions:
-      # IMPORTANT: this permission is mandatory for Trusted Publishing
-      id-token: write
+    runs-on: ubuntu-24.04
+
     steps:
       - uses: actions/checkout@v6
-
-      - uses: actions/setup-python@v6
         with:
-          python-version: "3.10"
+          persist-credentials: false
 
-      - name: Install dependencies
-        run: |
-          pip install -U -q build twine
-          pip list
+      - name: Install uv and set Python version
+        uses: astral-sh/setup-uv@v7
+        with:
+          activate-environment: true
+          python-version: "3.10"
+          enable-cache: true
 
       - name: Build package
-        run: python -m build
+        run: uv build --no-sources
 
-      - name: Check package
-        run: twine check dist/* --strict
+      - name: Verify package artifacts with twine
+        run: uvx twine check --strict dist/*
 
-      # ✅ Enable Test PyPI publish for testing
-      - name: Publish to Test PyPI 🧪
-        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
-        uses: pypa/gh-action-pypi-publish@v1.13.0
+      - name: Upload distributions
+        uses: actions/upload-artifact@v7
+        with:
+          name: dist
+          path: dist/
+
+      - name: Minimize uv cache
+        run: uv cache prune --ci
+
+  publish:
+    needs: build
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/project/receipt-ocr/
+    permissions:
+      # Mandatory for Trusted Publishing (OIDC); no API token needed
+      id-token: write
+
+    steps:
+      - name: Download distributions
+        uses: actions/download-artifact@v8
+        with:
+          name: dist
+          path: dist/
+
+      - name: Publish package to Test PyPI
+        uses: pypa/gh-action-pypi-publish@v1.14.2
         with:
           repository-url: https://test.pypi.org/legacy/
-
-      # ❌ Removed real PyPI publish step
-      # - name: Publish distribution 📦 to PyPI
-      #   if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
-      #   uses: pypa/gh-action-pypi-publish@v1.13.0
-      #   with:
-      #     user: __token__
-      #     password: ${{ secrets.pypi_password }}
+          # Manual re-runs of an already-uploaded version shouldn't fail
+          skip-existing: true
