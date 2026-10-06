@@ -38,16 +38,25 @@ jobs:
         working-directory: app
         run: docker compose build
 
-      # Pass secrets via env (not ${{ }} inside the script) to avoid shell injection
+      # Pass secrets via env (not ${{ }} inside the script) to avoid shell injection.
+      # Dependabot runs get no Actions secrets, so fall back to a dummy key: the
+      # server still starts for the health checks, and the OCR tests are skipped.
       - name: Create .env file for testing
+        id: env
         working-directory: app
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
           OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
         run: |
+          if [ -n "$OPENAI_API_KEY" ]; then
+            echo "has_openai_key=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::OPENAI_API_KEY not available; using a dummy key and skipping OCR endpoint tests"
+            echo "has_openai_key=false" >> "$GITHUB_OUTPUT"
+          fi
           {
-            printf 'OPENAI_API_KEY=%s\n' "$OPENAI_API_KEY"
+            printf 'OPENAI_API_KEY=%s\n' "${OPENAI_API_KEY:-dummy-key-for-ci}"
             printf 'OPENAI_BASE_URL=%s\n' "$OPENAI_BASE_URL"
             printf 'OPENAI_MODEL=%s\n' "$OPENAI_MODEL"
           } > .env
@@ -81,6 +90,7 @@ jobs:
           fi
 
       - name: Test OCR endpoint
+        if: steps.env.outputs.has_openai_key == 'true'
         run: |
           echo "Testing OCR endpoint with default schema..."
           response=$(curl -s -X POST -F "file=@images/receipt.jpg" http://localhost:8000/ocr/)
@@ -93,6 +103,7 @@ jobs:
           fi
 
       - name: Test OCR endpoint with custom schema
+        if: steps.env.outputs.has_openai_key == 'true'
         run: |
           echo "Testing OCR endpoint with custom schema..."
           response=$(curl -s -X POST -F "file=@images/receipt.jpg" -F 'json_schema={"merchant": "string", "total": "number"}' http://localhost:8000/ocr/)
@@ -104,6 +115,12 @@ jobs:
             exit 1
           fi
 
+      - name: Show container logs
+        if: failure()
+        working-directory: app
+        run: docker compose logs --no-color
+
       - name: Stop services
+        if: always()
         working-directory: app
         run: docker compose down
