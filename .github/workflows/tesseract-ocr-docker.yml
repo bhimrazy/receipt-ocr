@@ -15,6 +15,11 @@ on:
     - cron: "0 0 * * *" # Runs every day at midnight UTC
   workflow_dispatch:
 
+# Cancel superseded PR runs; every push to main still runs in full
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   docker-test:
     runs-on: ubuntu-24.04
