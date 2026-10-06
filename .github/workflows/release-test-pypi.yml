@@ -1,7 +1,7 @@
 name: Test PyPI Release
 
-# https://help.github.com/en/actions/reference/events-that-trigger-workflows
-on: # Trigger the workflow on push or pull request, but only for the main branch
+# https://docs.astral.sh/uv/guides/integration/github/#publishing-to-pypi
+on:
   push:
     branches: [main]
   pull_request:
@@ -10,47 +10,75 @@ on: # Trigger the workflow on push or pull request, but only for the main branch
       - ".github/workflows/release-test-pypi.yml"
   release:
     types: [published]
-  workflow_dispatch: # 👈 manual trigger added
+  workflow_dispatch:
 
-# based on https://github.com/pypa/gh-action-pypi-publish
+# Each job declares only the permissions it needs
+permissions: {}
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
-    # Specifying a GitHub environment is optional, but strongly encouraged
-    # environment: pypi
+    runs-on: ubuntu-24.04
     permissions:
-      # IMPORTANT: this permission is mandatory for Trusted Publishing
-      id-token: write
-    steps:
-      - uses: actions/checkout@v6
+      contents: read
 
-      - uses: actions/setup-python@v6
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # No cache in release builds to avoid cache poisoning
+      - name: Install uv and set Python version
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
         with:
           python-version: "3.10"
-
-      - name: Install dependencies
-        run: |
-          pip install -U -q build twine
-          pip list
+          enable-cache: false
 
       - name: Build package
-        run: python -m build
+        run: uv build --no-sources
 
-      - name: Check package
-        run: twine check dist/* --strict
+      - name: Verify package artifacts with twine
+        run: uvx twine check --strict dist/*
 
-      # ✅ Enable Test PyPI publish for testing
-      - name: Publish to Test PyPI 🧪
-        if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release' || github.event_name == 'workflow_dispatch'
-        uses: pypa/gh-action-pypi-publish@v1.13.0
+      - name: Smoke test (wheel)
+        run: uv run --isolated --no-project --with dist/*.whl tests/smoke_test.py
+
+      - name: Smoke test (source distribution)
+        run: uv run --isolated --no-project --with dist/*.tar.gz tests/smoke_test.py
+
+      - name: Upload distributions
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
-          repository-url: https://test.pypi.org/legacy/
+          name: dist
+          path: dist/
 
-      # ❌ Removed real PyPI publish step
-      # - name: Publish distribution 📦 to PyPI
-      #   if: startsWith(github.event.ref, 'refs/tags') || github.event_name == 'release'
-      #   uses: pypa/gh-action-pypi-publish@v1.13.0
-      #   with:
-      #     user: __token__
-      #     password: ${{ secrets.pypi_password }}
+  publish:
+    needs: build
+    if: github.event_name == 'release' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-24.04
+    environment:
+      name: testpypi
+      url: https://test.pypi.org/project/receipt-ocr/
+    permissions:
+      # Mandatory for Trusted Publishing (OIDC) and attestations; no API token needed
+      id-token: write
+
+    steps:
+      - name: Install uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          enable-cache: false
+
+      - name: Download distributions
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: dist
+          path: dist/
+
+      - name: Generate PEP 740 attestations
+        uses: astral-sh/attest-action@f589a42a7efb6fe400b4f400de60b4bc90390027 # v0.0.6
+
+      - name: Publish package to Test PyPI
+        run: >-
+          uv publish
+          --publish-url https://test.pypi.org/legacy/
+          --check-url https://test.pypi.org/simple/
