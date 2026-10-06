@@ -71,7 +71,15 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv sync --all-extras --dev
+          uv sync --locked --all-extras --dev
+          uv pip list
+
+      # requirements.txt is unpinned, so apply the supply-chain guard here.
+      # See https://docs.astral.sh/uv/reference/settings/#exclude-newer
+      - name: Install Tesseract OCR service requirements
+        env:
+          UV_EXCLUDE_NEWER: "2 days"
+        run: |
           uv pip install -r src/tesseract_ocr/requirements.txt
           uv pip list
 
