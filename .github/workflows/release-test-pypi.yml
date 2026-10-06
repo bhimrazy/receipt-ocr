@@ -15,13 +15,13 @@ on:
 # Each job declares only the permissions it needs
 permissions: {}
 
-env:
-  # Supply-chain guard: skip PyPI releases newer than this. See https://docs.astral.sh/uv/reference/settings/#exclude-newer
-  UV_EXCLUDE_NEWER: "2 days"
-
 jobs:
   build:
     runs-on: ubuntu-24.04
+    # Supply-chain guard: skip PyPI releases newer than this. See https://docs.astral.sh/uv/reference/settings/#exclude-newer
+    # Build job only: in publish it would break attest-action's own `uv run --locked`
+    env:
+      UV_EXCLUDE_NEWER: "2 days"
     permissions:
       contents: read
 
