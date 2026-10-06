@@ -14,7 +14,7 @@ classifiers = [
 ]
 dependencies = [
   "fastapi[standard]==0.142.2",
-  "pillow==12.3.0",
+  "pillow==12.3",
   "python-dotenv==1.2.4",
   "python-multipart==0.0.32",
   "receipt-ocr>=0.2.2",
