@@ -15,6 +15,10 @@ on:
 # Each job declares only the permissions it needs
 permissions: {}
 
+env:
+  # Supply-chain guard: skip PyPI releases newer than this. See https://docs.astral.sh/uv/reference/settings/#exclude-newer
+  UV_EXCLUDE_NEWER: "2 days"
+
 jobs:
   build:
     runs-on: ubuntu-24.04
