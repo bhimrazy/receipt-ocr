@@ -1,4 +1,4 @@
-__version__ = "0.3.1"
+__version__ = "0.4.0"
 __docs__ = "A package for extracting structured data from receipts."
 __author__ = "Bhimraj Yadav"
 __author_email__ = "bhimrajyadav977@gmail.com"
