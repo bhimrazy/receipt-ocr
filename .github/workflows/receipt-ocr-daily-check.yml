@@ -12,32 +12,36 @@ on:
     - cron: "0 0 * * *" # Runs every day at midnight UTC
   workflow_dispatch:
 
+# Read-only token; jobs need nothing more
+permissions:
+  contents: read
+
 jobs:
   build-and-test:
     runs-on: ubuntu-24.04
-
-    env:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-      OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
-      OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
 
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          persist-credentials: true
+          persist-credentials: false
 
       - name: Install uv and set Python version
         uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
         with:
           activate-environment: true
           python-version: "3.12"
-          enable-cache: true
+          enable-cache: false
 
       - name: Install receipt-ocr
         run: uv pip install receipt-ocr
 
+      # Secrets are scoped to the steps that call the API, not to package installation
       - name: Test CLI usage
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
         run: |
           output=$(receipt-ocr images/receipt.jpg)
           echo "$output"
@@ -50,8 +54,9 @@ jobs:
           fi
 
       - name: Test programmatic usage
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_BASE_URL: ${{ secrets.OPENAI_BASE_URL }}
+          OPENAI_MODEL: ${{ secrets.OPENAI_MODEL }}
         run: |
           python tests/parity_receipt_ocr/test_response_formats.py
-
-      - name: Minimize uv cache
-        run: uv cache prune --ci

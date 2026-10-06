@@ -9,9 +9,9 @@ updates:
       - "/app"
     schedule:
       interval: "weekly"
-    # Supply-chain guard: wait before proposing new releases (security updates are not delayed)
+    # Supply-chain guard: wait a week before proposing new releases (security updates are not delayed)
     cooldown:
-      default-days: 3
+      default-days: 7
     groups:
       # One PR for all minor/patch bumps; majors still get their own PR
       python-minor-patch:
@@ -32,7 +32,7 @@ updates:
     schedule:
       interval: "weekly"
     cooldown:
-      default-days: 3
+      default-days: 7
     groups:
       docker:
         patterns: ["*"]
@@ -50,7 +50,7 @@ updates:
     schedule:
       interval: "weekly"
     cooldown:
-      default-days: 3
+      default-days: 7
     groups:
       github-actions:
         patterns: ["*"]
