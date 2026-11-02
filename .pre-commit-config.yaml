@@ -28,7 +28,7 @@ repos:
       - id: detect-private-key
 
   - repo: https://github.com/codespell-project/codespell
-    rev: 2ccb47ff45ad361a21071a7eedda4c37e6ae8c5a # frozen: v2.4.2
+    rev: 57b21406f092110c18776e39b0bda50d37c945c8 # frozen: v2.4.3
     hooks:
       - id: codespell
         additional_dependencies: [tomli]
@@ -36,7 +36,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: c60c980e561ed3e73101667fe8365c609d19a438 # frozen: v0.15.9
+    rev: 25bcf95026b96e2dd3c0aec3090c3d6ef6ca2e6c # frozen: v0.17.3
     hooks:
       # Run the linter.
       - id: ruff-check
@@ -45,7 +45,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/executablebooks/mdformat
-    rev: 82912cdaea4fb830f751504486a7879c70526547 # frozen: 1.0.0
+    rev: 2d496dbc18e31b83a1596685347ffe0b6041daf0 # frozen: 1.0.0
     hooks:
       - id: mdformat
         additional_dependencies:
@@ -55,7 +55,7 @@ repos:
 
   # pre-commit/mirrors-prettier is archived; this is the maintained mirror
   - repo: https://github.com/rbubley/mirrors-prettier
-    rev: ef4a397f916211b4a39ccf9d3d9cbb6562157251 # frozen: v3.9.9
+    rev: 331f33fa4dfbcbca7c3da3620c137fde0faab273 # frozen: v3.9.10
     hooks:
       - id: prettier
         files: \.(json|yml|yaml|toml)
@@ -63,17 +63,17 @@ repos:
         args: ["--print-width=120"]
 
   - repo: https://github.com/tox-dev/pyproject-fmt
-    rev: 6e10264313f53d6247a8b1b984f5b5ccf50ba539 # frozen: v2.21.0
+    rev: 50e0f3aee9dc5747a5f173f79a7417403c18dda6 # frozen: v2.30.3
     hooks:
       - id: pyproject-fmt
         additional_dependencies: [tox]
   - repo: https://github.com/abravalheri/validate-pyproject
-    rev: 4b2e70d08cb2ccd26d1fba73588de41c7a5d50b7 # frozen: v0.25
+    rev: 82d21874c3242e4dc27bb47641c996902ef64eef # frozen: v0.27
     hooks:
       - id: validate-pyproject
 
   # Security audit of GitHub Actions workflows
   - repo: https://github.com/zizmorcore/zizmor-pre-commit
-    rev: fa412071e4f5d44d44f9e365f4676f9df92456a2 # frozen: v1.30.1
+    rev: c92afdf2c6ca336aaa8f39e2bd8d48f62dbd8e1f # frozen: v1.31.1
     hooks:
       - id: zizmor
